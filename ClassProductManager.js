@@ -8,11 +8,11 @@ class ProductManager{
         this.products.map((product)=>{
             if(product.id > maxId) maxId = product.id;
         })
-            return maxId
+            return maxId+1
     }
 
     addProducts(title, description, thumbnail, price, code, stock){
-        if (!title || !description || !thumbnail|| !price || !code || !stock){
+        if (!title || !description || !thumbnail|| !price || !code || stock === undefined){
             return console.log(`Error, all fields are required. Try Again.`);
         }
         if (this.products.find((product) => product.code === code)){
@@ -25,7 +25,7 @@ class ProductManager{
                 price, 
                 code, 
                 stock, 
-                id: this.#getId()+1
+                id: this.#getId()
             }
             this.products.push(product);
         }
@@ -33,11 +33,7 @@ class ProductManager{
 
     getProductsById(productId){
         const product = this.products.find(product => product.id === productId);
-        if (product){
-            return product;
-        }else{
-            return `Error, product ${productId} not found, try again.`;
-        }
+        return product || `Error, product ${productId} not found, try again.`;        
     }
 
     getProducts() {
