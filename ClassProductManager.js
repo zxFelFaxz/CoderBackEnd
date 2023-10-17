@@ -46,22 +46,17 @@ class ProductManager{
 }
 
 const productManager = new ProductManager();
-console.log('======================================');
-console.log(productManager.getProducts());
-console.log('======================================');
-productManager.addProducts('P1', 'Product 1', 'no image',100, 'jfk1900', 20);
-console.log('======================================');
-productManager.addProducts('P2', 'Product 2', 'I am an image',150, 'jfk1900', 21); // Code exist
-console.log('======================================');
-productManager.addProducts('P3', 'Product 3', 'no image',200, 30); // Uncompleted
-console.log('======================================');
-productManager.addProducts('P4', 'Product 4', 'I am an image',250, 'asd321', 70);
-console.log('======================================');
-console.log(productManager.getProductsById(1));
-console.log('======================================');
-console.log(productManager.getProductsById(2));
-console.log('======================================');
-console.log(productManager.getProductsById(3));
-console.log('======================================');
-console.log(productManager.getProducts());
-console.log('======================================');
+try {
+    console.log(productManager.getProducts());
+    productManager.addProducts('P1', 'Product 1', 'no image', 100, 'jfk1900', 20);
+    productManager.addProducts('P2', 'Product 2', 'I am an image', 150, 'jfk1900', 21); // Code exists
+    productManager.addProducts('P3', 'Product 3', 'no image',200, 30); // Uncompleted
+    productManager.addProducts('P4', 'Product 4', 'I am an image',250, 'asd321', 70);
+    console.log(productManager.getProducts());
+    console.log("----------------------------------------")
+    console.log(productManager.getProductsById(1));
+    console.log(productManager.getProductsById(2));
+    console.log(productManager.getProductsById(3));
+} catch (error) {
+    console.error(error.message);
+}
