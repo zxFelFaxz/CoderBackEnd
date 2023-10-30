@@ -1,8 +1,8 @@
-const fs = require("fs");
+import fs from "fs";
 
-class ProductManager {
-  constructor() {
-    this.path = './Products.json';
+export class ProductManager {
+  constructor(path) {
+    this.path = './src/Products.json';
     this.products = [];
   }
 
@@ -18,10 +18,12 @@ class ProductManager {
 
   async loadProducts() {
     try {
-      const productsJSON = await fs.promises.readFile(this.path, 'utf-8');
-      this.products = JSON.parse(productsJSON);
+        console.log(`Reading data from file: ${this.path}`);
+        const productsJSON = await fs.promises.readFile(this.path, 'utf-8');
+        this.products = JSON.parse(productsJSON);
     } catch (error) {
-      this.products = [];
+        console.error(`Error reading data: ${error}`);
+        this.products = [];
     }
   }
 
@@ -95,38 +97,38 @@ class ProductManager {
 
 const productManager = new ProductManager();
 
-async function testProductManager() {
-  try {
-    // Cargar productos al inicio de la prueba
-    await productManager.loadProducts();
+// async function testProductManager() {
+//   try {
+//     // Cargar productos al inicio de la prueba
+//     await productManager.loadProducts();
 
-    // Pruebas de funciones aquí
-    const products = await productManager.getProducts();
-    console.log("Products:", products);
+//     // Pruebas de funciones aquí
+//     const products = await productManager.getProducts();
+//     console.log("Products:", products);
 
-    // Prueba de agregar un producto
-    await productManager.addProduct("P7", "Producto 7", "no image", 750, "fgh123", 35);
-    await productManager.addProduct("P25", "Producto 25", "no image ever", 700, "fgh123456", 65);
-    console.log("Product added.");
-    console.log("Products:", products);
+//     // Prueba de agregar un producto
+//     await productManager.addProduct("P7", "Producto 7", "no image", 750, "fgh123", 35);
+//     await productManager.addProduct("P25", "Producto 25", "no image ever", 700, "fgh123456", 65);
+//     console.log("Product added.");
+//     console.log("Products:", products);
 
-    // Prueba de actualizar un producto
-    await productManager.updateProduct(2, "P5", "Producto 5", "new image", 200, "abc123", 50);
-    console.log("Product updated.");
-    console.log("Products:", products);
+//     // Prueba de actualizar un producto
+//     await productManager.updateProduct(2, "P5", "Producto 5", "new image", 200, "abc123", 50);
+//     console.log("Product updated.");
+//     console.log("Products:", products);
 
-    // Prueba de eliminar un producto
-    await productManager.deleteProduct(2);
-    console.log("Product deleted.");
+//     // Prueba de eliminar un producto
+//     await productManager.deleteProduct(2);
+//     console.log("Product deleted.");
 
-    // Prueba de obtener un producto por ID
-    const product = await productManager.getProductsById(1);
-    console.log("Product by ID:", product);
-  } catch (error) {
-    console.error(error.message);
-  }
-}
+//     // Prueba de obtener un producto por ID
+//     const product = await productManager.getProductsById(1);
+//     console.log("Product by ID:", product);
+//   } catch (error) {
+//     console.error(error.message);
+//   }
+// }
 
-testProductManager();
+// testProductManager();
 
-  
+

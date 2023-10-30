@@ -1,0 +1,92 @@
+[
+  {
+    "title": "P1",
+    "description": "Producto 1",
+    "thumbnail": "no image",
+    "price": 750,
+    "code": "abc100",
+    "stock": 35,
+    "id": 1
+  },
+  {
+    "title": "P2",
+    "description": "Producto 2",
+    "thumbnail": "no image",
+    "price": 750,
+    "code": "abc101",
+    "stock": 35,
+    "id": 2
+  },
+  {
+    "title": "P3",
+    "description": "Producto 3",
+    "thumbnail": "no image",
+    "price": 750,
+    "code": "abc102",
+    "stock": 35,
+    "id": 3
+  },
+  {
+    "title": "P4",
+    "description": "Producto 4",
+    "thumbnail": "no image",
+    "price": 750,
+    "code": "abc103",
+    "stock": 35,
+    "id": 4
+  },
+  {
+    "title": "P5",
+    "description": "Producto 5",
+    "thumbnail": "no image",
+    "price": 750,
+    "code": "abc104",
+    "stock": 35,
+    "id": 5
+  },
+  {
+    "title": "P6",
+    "description": "Producto 6",
+    "thumbnail": "no image",
+    "price": 750,
+    "code": "abc106",
+    "stock": 35,
+    "id": 6
+  },
+  {
+    "title": "P7",
+    "description": "Producto 7",
+    "thumbnail": "no image",
+    "price": 750,
+    "code": "abc107",
+    "stock": 35,
+    "id": 7
+  },
+  {
+    "title": "P8",
+    "description": "Producto 8",
+    "thumbnail": "no image",
+    "price": 750,
+    "code": "abc108",
+    "stock": 35,
+    "id": 8
+  },
+  {
+    "title": "P9",
+    "description": "Producto 9",
+    "thumbnail": "no image",
+    "price": 750,
+    "code": "abc109",
+    "stock": 35,
+    "id": 9
+  },
+  {
+    "title": "P10",
+    "description": "Producto 10",
+    "thumbnail": "no image",
+    "price": 750,
+    "code": "abc110",
+    "stock": 35,
+    "id": 10
+  }
+]
