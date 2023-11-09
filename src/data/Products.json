@@ -1,1 +1,56 @@
-[]
+[
+	{
+		"id": 1,
+		"title": "P1",
+		"description": "PRODUCTO 1",
+		"code": "P1",
+		"price": 50.01,
+		"status": true,
+		"stock": 5000,
+		"category": "NINGUNA",
+		"thumbnails": [
+			"1.png"
+		]
+	},
+	{
+		"id": 2,
+		"title": "P2",
+		"description": "PRODUCTO 2",
+		"code": "P2",
+		"price": 50.01,
+		"status": true,
+		"stock": 5000,
+		"category": "NINGUNA",
+		"thumbnails": [
+			"2.png"
+		]
+	},
+	{
+		"id": 3,
+		"title": "P3",
+		"description": "PRODUCTO 3",
+		"code": "P3",
+		"price": 50.01,
+		"status": true,
+		"stock": 5000,
+		"category": "NINGUNA",
+		"thumbnails": [
+			"3.png"
+		]
+	},
+	{
+		"title": "P5",
+		"description": [
+			"PRODUCTO CINCO"
+		],
+		"code": "P5",
+		"price": 500,
+		"status": true,
+		"stock": 500,
+		"category": "PRUEBA CINCO",
+		"thumbnails": [
+			"5.png"
+		],
+		"id": 5
+	}
+]

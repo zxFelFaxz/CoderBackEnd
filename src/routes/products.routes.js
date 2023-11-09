@@ -3,7 +3,7 @@ import { productManager } from "../persistence/index.js"
 
 const router = Router()
 
-// Obtener lista de productos (GET: http://localhost:8080/api/products || http://localhost:8080/api/products?limit=3)
+// Get product list (GET: http://localhost:8080/api/products || http://localhost:8080/api/products?limit=2)
 router.get("/", async (req, res) => {
     try {
         const limit = req.query.limit
@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
     }
 })
 
-// Obtener un producto por su ID (GET: http://localhost:8080/api/products/1)
+// Get a product by its ID (GET: http://localhost:8080/api/products/1)
 router.get("/:pid", async (req, res) => {
     try {
         const pid = parseInt(req.params.pid)
@@ -36,7 +36,7 @@ router.get("/:pid", async (req, res) => {
     }
 })
 
-// Agregar un nuevo producto (POST: http://localhost:8080/api/products)
+// Add a new product (POST: http://localhost:8080/api/products)
 router.post("/", async (req, res) => {
     try {
         const productInfo = req.body
@@ -48,7 +48,7 @@ router.post("/", async (req, res) => {
     }
 })
 
-// Actualizar un producto por su ID (PUT: http://localhost:8080/api/products/1)
+// Update a product by its ID (PUT: http://localhost:8080/api/products/1)
 router.put("/:pid", async (req, res) => {
     try {
         const pid = parseInt(req.params.pid)
@@ -61,7 +61,7 @@ router.put("/:pid", async (req, res) => {
     }
 })
 
-// Eliminar un producto por su ID (DELETE: http://localhost:8080/api/products/2)
+// Delete a product by its ID (DELETE: http://localhost:8080/api/products/2)
 router.delete("/:pid", async (req, res) => {
     try {
         const pid = parseInt(req.params.pid)

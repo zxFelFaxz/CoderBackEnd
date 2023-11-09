@@ -9,7 +9,7 @@ export class ProductManager {
         return fs.existsSync(this.filePath)
     }
 
-    // Obtener todos los productos
+    // Get all products
     async getProducts() {
         try {
             if (this.fileExist()) {
@@ -20,57 +20,57 @@ export class ProductManager {
                 return []
             }
         } catch (error) {
-            throw new Error("Error al obtener los productos del archivo")
+            throw new Error("Error getting products from file")
         }
     }
 
-    // Agregar un producto
-    async addProduct(productInfo) {
+    // Add a product
+    async addProduct(productData) {
         try {
             if(this.fileExist()){
                 const products = await this.getProducts()
             
-                // Verificar si todos los campos están completos y tienen valores válidos
+                // Check if all fields are complete and have valid values
                 if (
-                    !productInfo.title || typeof productInfo.title !== "string" ||
-                    !productInfo.description || (!Array.isArray(productInfo.description) || !productInfo.description.every(item => typeof item === "string")) ||
-                    !productInfo.code || typeof productInfo.code !== "string" ||
-                    !productInfo.price || productInfo.price < 0 || typeof productInfo.price !== "number" ||
-                    (productInfo.status && typeof productInfo.status !== "boolean") ||
-                    !productInfo.stock || productInfo.stock < 0 || typeof productInfo.stock !== "number" ||
-                    !productInfo.category || typeof productInfo.category !== "string" ||
-                    (productInfo.thumbnails && (!Array.isArray(productInfo.thumbnails) || !productInfo.thumbnails.every(item => typeof item === "string")))
+                    !productData.title || typeof productData.title !== "string" ||
+                    !productData.description || (!Array.isArray(productData.description) || !productData.description.every(item => typeof item === "string")) ||
+                    !productData.code || typeof productData.code !== "string" ||
+                    !productData.price || productData.price < 0 || typeof productData.price !== "number" ||
+                    (productData.status && typeof productData.status !== "boolean") ||
+                    !productData.stock || productData.stock < 0 || typeof productData.stock !== "number" ||
+                    !productData.category || typeof productData.category !== "string" ||
+                    (productData.thumbnails && (!Array.isArray(productData.thumbnails) || !productData.thumbnails.every(item => typeof item === "string")))
 
                 ) {
-                    throw new Error("Error al agregar el producto: todos los campos son obligatorios y deben tener valores válidos")
+                    throw new Error("Error adding product: all fields are required and must have valid values")
                 }
 
-                // Establecer status en true por defecto
-                if (!productInfo.status) {
-                    productInfo.status = true
+                // Set status to true by default
+                if (!productData.status) {
+                    productData.status = true
                 }
 
-                // Verificar si el producto ya existe
-                if (products.some((product) => product.code === productInfo.code)) {
-                    throw new Error(`Error al agregar el producto: el producto con código ${productInfo.code} ya existe`)
+                // Check if the product already exists
+                if (products.some((product) => product.code === productData.code)) {
+                    throw new Error(`Error adding product: product with code ${productData.code} already exists`)
                 }
 
-                // Autogenerar ID
+                // Autogenerate ID
                 const newProductId = products.reduce((maxId, product) => Math.max(maxId, product.id), 0)
-                const newProduct = { ...productInfo, id: newProductId + 1 }
+                const newProduct = { ...productData, id: newProductId + 1 }
 
-                // Agregar el producto
+                // Add the product
                 products.push(newProduct)
                 await fs.promises.writeFile(this.filePath, JSON.stringify(products, null, "\t"))
             } else {
-                throw new Error("Error al agregar el producto: error al obtener los productos del archivo")
+                throw new Error("Error when adding product: error when getting products from file")
             }
         } catch (error) {
             throw error
         }
     }
 
-    // Obtener un producto por ID
+    // Get a product by ID
     async getProductById(id) {
         try {
             if(this.fileExist()){
@@ -80,27 +80,27 @@ export class ProductManager {
                 if (product) {
                     return product
                 } else {
-                    throw new Error(`Error al buscar el producto: el producto con ID ${id} no existe`)
+                    throw new Error(`Error searching for product: product with ID ${id} does not exist`)
                 }
             } else {
-                throw new Error("Error al buscar el producto: error al obtener los productos del archivo")
+                throw new Error("Error searching for product: error getting products from file")
             }
         } catch (error) {
             throw error
         }
     }
 
-    // Actualizar un producto
+    // Upgrading a product
     async updateProduct(id, updateFields) {
         try {
             if (this.fileExist()) {
                 const products = await this.getProducts()
 
-                // Buscar posición del producto con el id
+                // Search for product position with product ID
                 const productIndex = products.findIndex((product) => product.id === id)
 
                 if (productIndex !== -1) {
-                    // No permitir la modificación del id
+                    // Do not allow modification of the ID
                     if ("id" in updateFields) {
                         delete updateFields.id
                     }
@@ -108,31 +108,31 @@ export class ProductManager {
                     products[productIndex] = { ...products[productIndex], ...updateFields }
                     await fs.promises.writeFile(this.filePath, JSON.stringify(products, null, "\t"))
                 } else {
-                    throw new Error(`Error al actualizar el producto: el producto con ID ${id} no existe`)
+                    throw new Error(`Error updating product: product with ID ${id} does not exist`)
                 }
             } else {
-                throw new Error("Error al actualizar el producto: error al obtener los productos del archivo")
+                throw new Error("Error updating the product: error getting the products from the file")
             }
         } catch (error) {
             throw error
         }
     }
 
-    // Eliminar un producto
+    // Delete a product
     async deleteProduct(id) {
         try {
             if (this.fileExist()) {
                 const products = await this.getProducts()
                 const updateProducts = products.filter((product) => product.id !== id)
 
-                // Actualizar el archivo con el producto eliminado
+                // Update the file with the deleted product
                 if (products.length !== updateProducts.length) {
                     await fs.promises.writeFile(this.filePath, JSON.stringify(updateProducts, null, "\t"))
                 } else {
-                    throw new Error(`Error al eliminar el producto: el producto con ID ${id} no existe`)
+                    throw new Error(`Error when deleting product: product with ID ${id} does not exist`)
                 }
             } else {
-                throw new Error("Error al eliminar el producto: error al obtener los productos del archivo")
+                throw new Error("Error when deleting product: error when getting products from file")
             }
         } catch (error) {
             throw error

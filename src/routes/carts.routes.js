@@ -1,19 +1,19 @@
 import { Router } from "express"
-import { cartManager } from "../persistence/index.js"
+import { cartManager, productManager } from "../persistence/index.js"
 
 const router = Router()
 
-// Crear un carrito (POST: http://localhost:8080/api/carts)
+// Create a cart (POST: http://localhost:8080/api/carts)
 router.post("/", async (req, res) => {
     try {
         const newCart = await cartManager.createCart()
-        res.status(201).json({ data: newCart, message: "Carrito creado" })
+        res.status(201).json({ data: newCart, message: "Cart created" })
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
 })
 
-// Obtener un carrito por su ID (GET: http://localhost:8080/api/carts/1)
+// Get a cart by ID (GET: http://localhost:8080/api/carts/1)
 router.get("/:cid", async (req, res) => {
     try {
         const cid = parseInt(req.params.cid)
@@ -29,7 +29,7 @@ router.get("/:cid", async (req, res) => {
     }
 })
 
-// Agregar un producto a un carrito (POST: http://localhost:8080/api/carts/1/product/1)
+// Add a product to a cart (POST: http://localhost:8080/api/carts/1/product/1)
 router.post("/:cid/product/:pid", async (req, res) => {
     try {
         const cid = parseInt(req.params.cid)
@@ -37,7 +37,7 @@ router.post("/:cid/product/:pid", async (req, res) => {
         const quantity = parseInt(req.body.quantity || 1)
         
         await cartManager.addProductToCart(cid, pid, quantity)
-        res.status(200).json({ message: `${quantity} de este producto agregado al carrito` })
+        res.status(200).json({ message: `${quantity} of this product added to your cart` })
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
