@@ -1,46 +1,47 @@
-import { Router } from "express"
-import { cartManager, productManager } from "../persistence/index.js"
+import { Router } from "express";
+import { cartManager } from "../persistence/index.js";
 
-const router = Router()
+const router = Router();
 
-// Create a cart (POST: http://localhost:8080/api/carts)
+const handleErrorResponse = (res, error, status = 500) => {
+    res.status(status).json({ error: error.message });
+};
+
 router.post("/", async (req, res) => {
     try {
-        const newCart = await cartManager.createCart()
-        res.status(201).json({ data: newCart, message: "Cart created" })
+        const newCart = await cartManager.createCart();
+        res.status(201).json({ data: newCart, message: "Cart created" });
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        handleErrorResponse(res, error);
     }
-})
+});
 
-// Get a cart by ID (GET: http://localhost:8080/api/carts/1)
 router.get("/:cid", async (req, res) => {
     try {
-        const cid = parseInt(req.params.cid)
-        const cart = await cartManager.getCartById(cid)
+        const cid = parseInt(req.params.cid, 10);
+        const cart = await cartManager.getCartById(cid);
 
         if (cart) {
-            res.status(200).json({ data: cart })
+            res.status(200).json({ data: cart });
         } else {
-            res.status(404).json({ error: error.message })
+            res.status(404).json({ error: "Cart not found" });
         }
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        handleErrorResponse(res, error);
     }
-})
+});
 
-// Add a product to a cart (POST: http://localhost:8080/api/carts/1/product/1)
 router.post("/:cid/product/:pid", async (req, res) => {
     try {
-        const cid = parseInt(req.params.cid)
-        const pid = parseInt(req.params.pid)
-        const quantity = parseInt(req.body.quantity || 1)
-        
-        await cartManager.addProductToCart(cid, pid, quantity)
-        res.status(200).json({ message: `${quantity} of this product added to your cart` })
-    } catch (error) {
-        res.status(500).json({ error: error.message })
-    }
-})
+        const cid = parseInt(req.params.cid, 10);
+        const pid = parseInt(req.params.pid, 10);
+        const quantity = parseInt(req.body.quantity || 1);
 
-export { router as cartsRouter }
+        await cartManager.addProductToCart(cid, pid, quantity);
+        res.status(200).json({ message: `${quantity} of this product added to your cart` });
+    } catch (error) {
+        handleErrorResponse(res, error);
+    }
+});
+
+export { router as cartsRouter };

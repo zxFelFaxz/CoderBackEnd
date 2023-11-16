@@ -1,56 +1,41 @@
 [
 	{
-		"id": 1,
 		"title": "P1",
-		"description": "PRODUCTO 1",
-		"code": "P1",
-		"price": 50.01,
-		"status": true,
-		"stock": 5000,
-		"category": "NINGUNA",
-		"thumbnails": [
-			"1.png"
-		]
-	},
-	{
-		"id": 2,
-		"title": "P2",
-		"description": "PRODUCTO 2",
-		"code": "P2",
-		"price": 50.01,
-		"status": true,
-		"stock": 5000,
-		"category": "NINGUNA",
-		"thumbnails": [
-			"2.png"
-		]
-	},
-	{
-		"id": 3,
-		"title": "P3",
-		"description": "PRODUCTO 3",
-		"code": "P3",
-		"price": 50.01,
-		"status": true,
-		"stock": 5000,
-		"category": "NINGUNA",
-		"thumbnails": [
-			"3.png"
-		]
-	},
-	{
-		"title": "P5",
 		"description": [
-			"PRODUCTO CINCO"
+			"Producto 1"
 		],
-		"code": "P5",
-		"price": 500,
+		"code": "P1",
+		"price": 12,
+		"stock": 12,
+		"category": "Vegan",
 		"status": true,
-		"stock": 500,
-		"category": "PRUEBA CINCO",
-		"thumbnails": [
-			"5.png"
+		"thumbnail": "1.png",
+		"id": 1
+	},
+	{
+		"title": "aaa",
+		"description": [
+			"aaa"
 		],
-		"id": 5
+		"code": "asdas",
+		"price": 12,
+		"stock": 10,
+		"category": "Vegan",
+		"status": true,
+		"thumbnail": "2.png",
+		"id": 2
+	},
+	{
+		"title": "aaaddd",
+		"description": [
+			"aaaddd"
+		],
+		"code": "asdasddd",
+		"price": 12,
+		"stock": 10,
+		"category": "Vegan",
+		"status": true,
+		"thumbnail": "",
+		"id": 3
 	}
 ]

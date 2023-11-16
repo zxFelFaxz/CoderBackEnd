@@ -9,7 +9,7 @@ export class ProductManager {
         return fs.existsSync(this.filePath)
     }
 
-    // Get all products
+    //Get Products
     async getProducts() {
         try {
             if (this.fileExist()) {
@@ -24,42 +24,41 @@ export class ProductManager {
         }
     }
 
-    // Add a product
-    async addProduct(productData) {
+    //Add product
+    async addProduct(productInfo) {
         try {
             if(this.fileExist()){
                 const products = await this.getProducts()
             
                 // Check if all fields are complete and have valid values
                 if (
-                    !productData.title || typeof productData.title !== "string" ||
-                    !productData.description || (!Array.isArray(productData.description) || !productData.description.every(item => typeof item === "string")) ||
-                    !productData.code || typeof productData.code !== "string" ||
-                    !productData.price || productData.price < 0 || typeof productData.price !== "number" ||
-                    (productData.status && typeof productData.status !== "boolean") ||
-                    !productData.stock || productData.stock < 0 || typeof productData.stock !== "number" ||
-                    !productData.category || typeof productData.category !== "string" ||
-                    (productData.thumbnails && (!Array.isArray(productData.thumbnails) || !productData.thumbnails.every(item => typeof item === "string")))
-
+                    !productInfo.title || typeof productInfo.title !== "string" ||
+                    !productInfo.description || (!Array.isArray(productInfo.description) || !productInfo.description.every((item) => typeof item === "string")) ||
+                    !productInfo.code || typeof productInfo.code !== "string" ||
+                    !productInfo.price || productInfo.price < 0 || typeof productInfo.price !== "number" ||
+                    (productInfo.status && typeof productInfo.status !== "boolean") ||
+                    !productInfo.stock || productInfo.stock < 0 || typeof productInfo.stock !== "number" ||
+                    !productInfo.category || (typeof productInfo.category !== "string") || (productInfo.category !== "Vegan" && productInfo.category !== "vegetariano") ||
+                    (productInfo.thumbnail && (typeof productInfo.thumbnail !== "string"))
                 ) {
-                    throw new Error("Error adding product: all fields are required and must have valid values")
+                    throw new Error("Error adding product: all fields are mandatory and must have valid values.")
                 }
 
                 // Set status to true by default
-                if (!productData.status) {
-                    productData.status = true
+                if (productInfo.status === "" || productInfo.status === null || productInfo.status === undefined) {
+                    productInfo.status = true
                 }
 
                 // Check if the product already exists
-                if (products.some((product) => product.code === productData.code)) {
-                    throw new Error(`Error adding product: product with code ${productData.code} already exists`)
+                if (products.some((product) => product.code === productInfo.code)) {
+                    throw new Error(`Error adding product: product with code ${productInfo.code} already exists`)
                 }
 
                 // Autogenerate ID
                 const newProductId = products.reduce((maxId, product) => Math.max(maxId, product.id), 0)
-                const newProduct = { ...productData, id: newProductId + 1 }
+                const newProduct = { ...productInfo, id: newProductId + 1 }
 
-                // Add the product
+                // Add Product
                 products.push(newProduct)
                 await fs.promises.writeFile(this.filePath, JSON.stringify(products, null, "\t"))
             } else {
@@ -70,7 +69,7 @@ export class ProductManager {
         }
     }
 
-    // Get a product by ID
+    //Get product by ID
     async getProductById(id) {
         try {
             if(this.fileExist()){
@@ -80,29 +79,43 @@ export class ProductManager {
                 if (product) {
                     return product
                 } else {
-                    throw new Error(`Error searching for product: product with ID ${id} does not exist`)
+                    throw new Error(`Error when searching for product: product with ID ${id} does not exist`)
                 }
             } else {
-                throw new Error("Error searching for product: error getting products from file")
+                throw new Error("Error when searching for product: error getting products from file")
             }
         } catch (error) {
             throw error
         }
     }
 
-    // Upgrading a product
+    // Update product
     async updateProduct(id, updateFields) {
         try {
             if (this.fileExist()) {
                 const products = await this.getProducts()
 
-                // Search for product position with product ID
+                // Search for product position with id
                 const productIndex = products.findIndex((product) => product.id === id)
 
                 if (productIndex !== -1) {
-                    // Do not allow modification of the ID
+                     // Do not allow modification of the id
                     if ("id" in updateFields) {
                         delete updateFields.id
+                    }
+
+                    // Check if all fields are complete and have valid values
+                    if (
+                        updateFields.title && (typeof updateFields.title !== "string") ||
+                        updateFields.description && (!Array.isArray(updateFields.description) || !updateFields.description.every((item) => typeof item === "string")) ||
+                        updateFields.code && (typeof updateFields.code !== "string") ||
+                        updateFields.price && (updateFields.price < 0 || typeof updateFields.price !== "number") ||
+                        (updateFields.status && typeof updateFields.status !== "boolean") ||
+                        updateFields.stock && (updateFields.stock < 0 || typeof updateFields.stock !== "number") ||
+                        updateFields.category && ((typeof updateFields.category !== "string") || (updateFields.category !== "Vegan" && updateFields.category !== "vegetariano")) ||
+                        (updateFields.thumbnail && (typeof updateFields.thumbnail !== "string"))
+                    ) {
+                        throw new Error("Error updating product: some fields are invalid")
                     }
 
                     products[productIndex] = { ...products[productIndex], ...updateFields }
@@ -118,7 +131,7 @@ export class ProductManager {
         }
     }
 
-    // Delete a product
+    // Detele product
     async deleteProduct(id) {
         try {
             if (this.fileExist()) {
