@@ -1,0 +1,324 @@
+[
+    {
+        "title": "Lentil and Tofu Burger",
+        "description": [
+            "Lentil",
+            "Tofu",
+            "Onion",
+            "Bell Pepper",
+            "Avocado",
+            "Mustard"
+        ],
+        "code": "vegg1",
+        "price": 280,
+        "stock": 15,
+        "category": "vegan",
+        "status": true,
+        "thumbnail": "1694909079504-item-1.jpg",
+        "id": 1
+    },
+    {
+        "title": "Quinoa and Spinach Burger",
+        "description": [
+            "Quinoa",
+            "Spinach",
+            "Lentil",
+            "Vegan Cheese",
+            "Beetroot"
+        ],
+        "code": "vegg2",
+        "price": 250,
+        "stock": 20,
+        "category": "vegan",
+        "status": true,
+        "thumbnail": "1694909173856-item-2.jpg",
+        "id": 2
+    },
+    {
+        "title": "Burger with Cheddar and Onion",
+        "description": [
+            "Soy Patty",
+            "Caramelized Onion",
+            "Cheddar Cheese",
+            "Mayonnaise",
+            "Ketchup"
+        ],
+        "code": "vget1",
+        "price": 280,
+        "stock": 20,
+        "category": "vegetarian",
+        "status": true,
+        "thumbnail": "1694909318055-item-3.jpg",
+        "id": 3
+    },
+    {
+        "title": "Chickpea and Tofu Burger",
+        "description": [
+            "Chickpea",
+            "Tofu",
+            "Mushrooms",
+            "Tomato",
+            "Olives",
+            "Onion"
+        ],
+        "code": "vegg3",
+        "price": 250,
+        "stock": 10,
+        "category": "vegan",
+        "status": true,
+        "thumbnail": "1694909402608-item-4.jpg",
+        "id": 4
+    },
+    {
+        "title": "Mozzarella Pizza",
+        "description": [
+            "Mozzarella",
+            "Tomato Sauce",
+            "Oregano"
+        ],
+        "code": "vget2",
+        "price": 200,
+        "stock": 32,
+        "category": "vegetarian",
+        "status": true,
+        "thumbnail": "1694909445144-item-5.jpg",
+        "id": 5
+    },
+    {
+        "title": "Caprese Pizza",
+        "description": [
+            "Tomato",
+            "Basil",
+            "Vegan Cheese",
+            "Tomato Sauce"
+        ],
+        "code": "vegg4",
+        "price": 220,
+        "stock": 18,
+        "category": "vegan",
+        "status": true,
+        "thumbnail": "1694909541010-item-6.jpg",
+        "id": 6
+    },
+    {
+        "title": "Pineapple Pizza",
+        "description": [
+            "Pineapple",
+            "Vegan Cheese",
+            "Tomato Sauce"
+        ],
+        "code": "vegg5",
+        "price": 220,
+        "stock": 8,
+        "category": "vegan",
+        "status": true,
+        "thumbnail": "1694909582741-item-7.jpg",
+        "id": 7
+    },
+    {
+        "title": "Gramajo Pizza",
+        "description": [
+            "Fried Egg",
+            "French Fries",
+            "Olives",
+            "Mozzarella",
+            "Tomato Sauce"
+        ],
+        "code": "vget3",
+        "price": 280,
+        "stock": 12,
+        "category": "vegetarian",
+        "status": true,
+        "thumbnail": "1694909673104-item-8.jpg",
+        "id": 8
+    },
+    {
+        "title": "Fries with Cheddar",
+        "description": [
+            "Potato",
+            "Cheddar Cheese",
+            "Green Onion"
+        ],
+        "code": "vget4",
+        "price": 220,
+        "stock": 50,
+        "category": "vegetarian",
+        "status": true,
+        "thumbnail": "1694909714148-item-9.jpg",
+        "id": 9
+    },
+    {
+        "title": "Fries",
+        "description": [
+            "Potato",
+            "Salt"
+        ],
+        "code": "vegg6",
+        "price": 200,
+        "stock": 60,
+        "category": "vegan",
+        "status": true,
+        "thumbnail": "1694910306622-item-10.jpg",
+        "id": 10
+    },
+    {
+        "title": "Potato Omelette",
+        "description": [
+            "Potato",
+            "Egg",
+            "Onion"
+        ],
+        "code": "vget5",
+        "price": 220,
+        "stock": 8,
+        "category": "vegetarian",
+        "status": true,
+        "thumbnail": "1694910490093-item-11.jpg",
+        "id": 11
+    },
+    {
+        "title": "Tofu Sandwich",
+        "description": [
+            "Tofu",
+            "Red Leaf Lettuce",
+            "Vegan Creamy Cheese"
+        ],
+        "code": "vegg7",
+        "price": 220,
+        "stock": 20,
+        "category": "vegan",
+        "status": true,
+        "thumbnail": "1694910559418-item-12.jpg",
+        "id": 12
+    },
+    {
+        "title": "Seitan Sandwich",
+        "description": [
+            "Seitan",
+            "Spinach",
+            "Bell Pepper",
+            "Chickpea Hummus"
+        ],
+        "code": "vegg8",
+        "price": 250,
+        "stock": 10,
+        "category": "vegan",
+        "status": true,
+        "thumbnail": "1694910656497-item-13.jpg",
+        "id": 13
+    },
+    {
+        "title": "Soy Empanadas",
+        "description": [
+            "Texturized Soy",
+            "Mushrooms",
+            "Onion",
+            "Garlic",
+            "Soy Sauce"
+        ],
+        "code": "vegg9",
+        "price": 100,
+        "stock": 40,
+        "category": "vegan",
+        "status": true,
+        "thumbnail": "1694910735315-item-14.jpg",
+        "id": 14
+    },
+    {
+        "title": "Vegetable Empanadas",
+        "description": [
+            "Swiss Chard",
+            "Spinach",
+            "Garlic",
+            "Onion",
+            "Bell Pepper"
+        ],
+        "code": "vegg10",
+        "price": 100,
+        "stock": 50,
+        "category": "vegan",
+        "status": true,
+        "thumbnail": "1694910784214-item-15.jpg",
+        "id": 15
+    },
+    {
+        "title": "Onion and Cheese Empanadas",
+        "description": [
+            "Caramelized Onion",
+            "Mozzarella"
+        ],
+        "code": "vget6",
+        "price": 80,
+        "stock": 50,
+        "category": "vegetarian",
+        "status": true,
+        "thumbnail": "1694910851947-item-16.jpg",
+        "id": 16
+    },
+    {
+        "title": "Eggplant Napolitana",
+        "description": [
+            "Eggplant",
+            "Mozzarella",
+            "Tomato",
+            "Basil",
+            "Tomato Sauce"
+        ],
+        "code": "vget7",
+        "price": 250,
+        "stock": 4,
+        "category": "vegetarian",
+        "status": true,
+        "thumbnail": "1694910944999-item-17.jpg",
+        "id": 17
+    },
+    {
+        "title": "Soy Rolls",
+        "description": [
+            "Texturized Soy",
+            "Mozzarella",
+            "Egg",
+            "Onion",
+            "Mushrooms"
+        ],
+        "code": "vget8",
+        "price": 150,
+        "stock": 28,
+        "category": "vegetarian",
+        "status": true,
+        "thumbnail": "1694910992301-item-18.jpg",
+        "id": 18
+    },
+    {
+        "title": "Tofu Croquettes",
+        "description": [
+            "Tofu",
+            "Walnuts",
+            "Zucchini",
+            "Tomato"
+        ],
+        "code": "vegg11",
+        "price": 80,
+        "stock": 30,
+        "category": "vegan",
+        "status": true,
+        "thumbnail": "1694911055066-item-19.jpg",
+        "id": 19
+    },
+    {
+        "title": "Tofu Balls",
+        "description": [
+            "Tofu",
+            "Sesame Seeds",
+            "Mustard",
+            "Soy Sauce"
+        ],
+        "code": "vegg12",
+        "price": 80,
+        "stock": 15,
+        "category": "vegan",
+        "status": true,
+        "thumbnail": "1694911104178-item-20.jpg",
+        "id": 20
+    }
+]
