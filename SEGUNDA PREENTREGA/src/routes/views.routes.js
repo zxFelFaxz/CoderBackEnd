@@ -8,7 +8,7 @@ const router = Router();
 router.get("/", async (req, res) => {
     try {
         const productsNoFilter = await productManager.getProductsNoFilter();
-        res.render("home", { productsNoFilter, title: "Green Flavors - Uruguay" });
+        res.render("home", { productsNoFilter, title: "Something" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
 // Real-time products page
 router.get("/realtimeproducts", async (req, res) => {
     try {
-        res.render("realTimeProducts", { title: "Menu - Green Flavors" });
+        res.render("realTimeProducts", { title: "Menu" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -73,7 +73,7 @@ router.get("/products", async (req, res) => {
             hasNextPage: products.hasNextPage,
             prevLink: products.hasPrevPage ? `${baseUrl.replace(`page=${products.page}`, `page=${products.prevPage}`)}` : null,
             nextLink: products.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${products.page}`, `page=${products.nextPage}`) : baseUrl.concat(`?page=${products.nextPage}`) : null,
-            title: "Menu - Green Flavors",
+            title: "Menu",
         };
 
         res.render("productsPaginate", dataProducts);
@@ -90,7 +90,7 @@ router.get("/products/:pid", async (req, res) => {
 
         product.title = product.title.toUpperCase();
 
-        res.render("productDetail", { product, title: `${product.title} - Green Flavors` });
+        res.render("productDetail", { product, title: `${product.title} - something` });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -101,7 +101,7 @@ router.get("/carts/:cid", async (req, res) => {
     try {
         const { cid } = req.params;
         const cart = await cartManager.getCartById(cid);
-        res.render("cart", { cart, title: "Cart - Green Flavors" });
+        res.render("cart", { cart, title: "Cart" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
