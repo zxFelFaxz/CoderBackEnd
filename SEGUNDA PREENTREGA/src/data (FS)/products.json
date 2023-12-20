@@ -14,7 +14,7 @@
         "stock": 15,
         "category": "vegan",
         "status": true,
-        "thumbnail": "1694909079504-item-1.jpg",
+        "thumbnail": "Lentil-and-Tofu-Burger.jpg",
         "id": 1
     },
     {
@@ -31,7 +31,7 @@
         "stock": 20,
         "category": "vegan",
         "status": true,
-        "thumbnail": "1694909173856-item-2.jpg",
+        "thumbnail": "Quinoa-and-Spinach-Burger.jpg",
         "id": 2
     },
     {
@@ -48,7 +48,7 @@
         "stock": 20,
         "category": "vegetarian",
         "status": true,
-        "thumbnail": "1694909318055-item-3.jpg",
+        "thumbnail": "Burger-with-Cheddar-and-Onion.jpg",
         "id": 3
     },
     {
@@ -66,7 +66,7 @@
         "stock": 10,
         "category": "vegan",
         "status": true,
-        "thumbnail": "1694909402608-item-4.jpg",
+        "thumbnail": "Chickpea-and-Tofu-Burger.jpg",
         "id": 4
     },
     {
@@ -81,7 +81,7 @@
         "stock": 32,
         "category": "vegetarian",
         "status": true,
-        "thumbnail": "1694909445144-item-5.jpg",
+        "thumbnail": "Mozzarella-Pizza.jpg",
         "id": 5
     },
     {
@@ -97,7 +97,7 @@
         "stock": 18,
         "category": "vegan",
         "status": true,
-        "thumbnail": "1694909541010-item-6.jpg",
+        "thumbnail": "Caprese-Pizza.jpg",
         "id": 6
     },
     {
@@ -112,7 +112,7 @@
         "stock": 8,
         "category": "vegan",
         "status": true,
-        "thumbnail": "1694909582741-item-7.jpg",
+        "thumbnail": "Pineapple-Pizza.jpg",
         "id": 7
     },
     {
@@ -129,7 +129,7 @@
         "stock": 12,
         "category": "vegetarian",
         "status": true,
-        "thumbnail": "1694909673104-item-8.jpg",
+        "thumbnail": "Gramajo-Pizza.jpg",
         "id": 8
     },
     {
@@ -144,7 +144,7 @@
         "stock": 50,
         "category": "vegetarian",
         "status": true,
-        "thumbnail": "1694909714148-item-9.jpg",
+        "thumbnail": "Fries-with-Cheddar.jpg",
         "id": 9
     },
     {
@@ -158,7 +158,7 @@
         "stock": 60,
         "category": "vegan",
         "status": true,
-        "thumbnail": "1694910306622-item-10.jpg",
+        "thumbnail": "Fries.jpg",
         "id": 10
     },
     {
@@ -173,7 +173,7 @@
         "stock": 8,
         "category": "vegetarian",
         "status": true,
-        "thumbnail": "1694910490093-item-11.jpg",
+        "thumbnail": "Potato-Omelette.jpg",
         "id": 11
     },
     {
@@ -188,7 +188,7 @@
         "stock": 20,
         "category": "vegan",
         "status": true,
-        "thumbnail": "1694910559418-item-12.jpg",
+        "thumbnail": "Tofu-Sandwich.jpg",
         "id": 12
     },
     {
@@ -204,7 +204,7 @@
         "stock": 10,
         "category": "vegan",
         "status": true,
-        "thumbnail": "1694910656497-item-13.jpg",
+        "thumbnail": "Seitan-Sandwich.jpg",
         "id": 13
     },
     {
@@ -221,7 +221,7 @@
         "stock": 40,
         "category": "vegan",
         "status": true,
-        "thumbnail": "1694910735315-item-14.jpg",
+        "thumbnail": "Soy-Empanadas.jpg",
         "id": 14
     },
     {
@@ -238,7 +238,7 @@
         "stock": 50,
         "category": "vegan",
         "status": true,
-        "thumbnail": "1694910784214-item-15.jpg",
+        "thumbnail": "Vegetable-Empanadas.jpg",
         "id": 15
     },
     {
@@ -252,7 +252,7 @@
         "stock": 50,
         "category": "vegetarian",
         "status": true,
-        "thumbnail": "1694910851947-item-16.jpg",
+        "thumbnail": "Onion-and-Cheese-Empanadas.jpg",
         "id": 16
     },
     {
@@ -269,7 +269,7 @@
         "stock": 4,
         "category": "vegetarian",
         "status": true,
-        "thumbnail": "1694910944999-item-17.jpg",
+        "thumbnail": "Eggplant-Napolitana.jpg",
         "id": 17
     },
     {
@@ -286,7 +286,7 @@
         "stock": 28,
         "category": "vegetarian",
         "status": true,
-        "thumbnail": "1694910992301-item-18.jpg",
+        "thumbnail": "Soy-Rolls.jpg",
         "id": 18
     },
     {
@@ -302,7 +302,7 @@
         "stock": 30,
         "category": "vegan",
         "status": true,
-        "thumbnail": "1694911055066-item-19.jpg",
+        "thumbnail": "Tofu-Croquettes.jpg",
         "id": 19
     },
     {
@@ -318,7 +318,7 @@
         "stock": 15,
         "category": "vegan",
         "status": true,
-        "thumbnail": "1694911104178-item-20.jpg",
+        "thumbnail": "Tofu-Balls.jpg",
         "id": 20
     }
 ]

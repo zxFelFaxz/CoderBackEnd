@@ -6,8 +6,10 @@ dotenv.config()
 export const connectDB = async () => {
     try {
         await mongoose.connect(
-            "mongodb+srv://zxfabyxz:Asteroide15@cluster0.kpxierz.mongodb.net/?retryWrites=true&w=majority"
-            //process.env.MONGODB_URI
+            "mongodb+srv://zxfabyxz:Asteroide15@cluster0.kpxierz.mongodb.net/?retryWrites=true&w=majority", {
+                useNewUrlParser: true,
+                useUnifiedTopology: true
+            }
         )
         console.log("Database successfully connected")
     } catch {

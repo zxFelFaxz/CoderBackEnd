@@ -38,7 +38,7 @@ export class ProductManagerFS {
                     !productInfo.price || productInfo.price < 0 || typeof productInfo.price !== "number" ||
                     (productInfo.status && typeof productInfo.status !== "boolean") ||
                     !productInfo.stock || productInfo.stock < 0 || typeof productInfo.stock !== "number" ||
-                    !productInfo.category || (typeof productInfo.category !== "string") || (productInfo.category !== "vegano" && productInfo.category !== "vegetariano") ||
+                    !productInfo.category || (typeof productInfo.category !== "string") || (productInfo.category !== "vegan" && productInfo.category !== "vegetarian") ||
                     (productInfo.thumbnail && (typeof productInfo.thumbnail !== "string"))
                 ) {
                     throw new Error("Error adding the product: all fields are mandatory and must have valid values");
@@ -112,7 +112,7 @@ export class ProductManagerFS {
                         updateFields.price && (updateFields.price < 0 || typeof updateFields.price !== "number") ||
                         (updateFields.status && typeof updateFields.status !== "boolean") ||
                         updateFields.stock && (updateFields.stock < 0 || typeof updateFields.stock !== "number") ||
-                        updateFields.category && ((typeof updateFields.category !== "string") || (updateFields.category !== "vegano" && updateFields.category !== "vegetariano")) ||
+                        updateFields.category && ((typeof updateFields.category !== "string") || (updateFields.category !== "vegan" && updateFields.category !== "vegetarian")) ||
                         (updateFields.thumbnail && (typeof updateFields.thumbnail !== "string"))
                     ) {
                         throw new Error("Error updating the product: some fields are not valid");

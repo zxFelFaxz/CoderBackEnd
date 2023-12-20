@@ -1,11 +1,26 @@
 import { Router } from "express";
-import { productManager } from "../dao/index.js";
-import { cartManager } from "../dao/index.js";
+import { productManager, cartManager } from "../dao/index.js";
 
 const router = Router();
 
+//If there is no active session
+const publicRouteMiddleware = (req, res, next) => {
+    if (!req.session.email) {
+        return res.redirect("/login")
+    }
+    next()
+}
+
+//If there is an active session
+const privateRouteMiddleware = (req, res, next) => {
+    if (req.session.email) {
+        return res.redirect("/profile")
+    }
+    next()
+}
+
 // Home page with products
-router.get("/", async (req, res) => {
+router.get("/", publicRouteMiddleware, async (req, res) => {
     try {
         const productsNoFilter = await productManager.getProductsNoFilter();
         res.render("home", { productsNoFilter, title: "Something" });
@@ -76,7 +91,11 @@ router.get("/products", async (req, res) => {
             title: "Menu",
         };
 
-        res.render("productsPaginate", dataProducts);
+        res.render("productsPaginate", {
+            dataProducts,
+            userFirstName: req.session.first_name,
+            userLastName: req.session.last_name,
+            userRole: req.session.role,})
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -106,5 +125,39 @@ router.get("/carts/:cid", async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+// Signup
+router.get("/signup", privateRouteMiddleware, async (req, res) => {
+    try {
+        res.render("signup", { title: "Register" })
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+})
+
+// Login
+router.get("/login", privateRouteMiddleware, async (req, res) => {
+    try {
+        res.render("login", { title: "Log in" })
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+})
+
+// Perfil
+router.get("/profile", publicRouteMiddleware, async (req, res) => {
+    try {
+        res.render("profile", { 
+            userFirstName: req.session.first_name,
+            userLastName: req.session.last_name,
+            userEmail: req.session.email,
+            userAge: req.session.age,
+            userRole: req.session.role,
+            title: "Profile"
+        })   
+    } catch (error) {
+        res.status(500).json({ error: "Error getting profile" })
+    }
+})
 
 export { router as viewsRouter };

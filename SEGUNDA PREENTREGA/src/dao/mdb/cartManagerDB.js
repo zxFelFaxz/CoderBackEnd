@@ -24,7 +24,6 @@ export class CartManagerMDB {
             if (!result) {
                 throw new Error("Cart not found");
             }
-
             return result;
         } catch (error) {
             console.log("getCartById: ", error.message);

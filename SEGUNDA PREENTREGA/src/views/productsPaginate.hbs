@@ -1,9 +1,19 @@
 <div class="app-content container">
+    {{#if userRole}}
+        <div class="greeting-message-container">
+            {{#if userFirstName}}
+                <h3 class="greeting-message">Hi, <b>{{userFirstName}} {{userLastName}}</b></h3>
+            {{else}}
+                <h3 class="greeting-message">Hi, <b>admin</b></h3>
+            {{/if}}
+            <h4 class="role-message">You are <b class="user-role-role-message">{{userRole}}</b> here</h4>
+        </div>
+    {{/if}}
     <h1 class="title-category">MENU</h1>
-    {{#if payload.length}}
+    {{#if dataProducts.payload.length}}
         <div>
             <div class="item-list">
-                {{#each payload}}
+                {{#each dataProducts.payload}}
                     <a href="/products/{{this._id}}" class="card-list">
                         <div class="card">
                             {{#if thumbnail}}
@@ -22,16 +32,16 @@
             </div>
         </div>
         <div class="pagination-container">
-            {{#if prevLink}}
-                <a href="{{prevLink}}"><p class="pagination-link">{{prevPage}}</p></a>
+            {{#if dataProducts.prevLink}}
+                <a href="{{dataProducts.prevLink}}"><p class="pagination-link">{{dataProducts.prevPage}}</p></a>
             {{/if}}
-            <p class="pagination-active">{{page}}</p>
-            {{#if nextLink}}
-                <a href="{{nextLink}}"><p class="pagination-link">{{nextPage}}</p></a>
+            <p class="pagination-active">{{dataProducts.page}}</p>
+            {{#if dataProducts.nextLink}}
+                <a href="{{dataProducts.nextLink}}"><p class="pagination-link">{{dataProducts.nextPage}}</p></a>
             {{/if}}
         </div>
     {{else}}
-        <h2 class="title-category">The menu could not be loaded</h2>
+        <h2 class="title-category">Could not load menu</h2>
     {{/if}}
 </div>
 

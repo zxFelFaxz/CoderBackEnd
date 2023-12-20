@@ -4,6 +4,8 @@ import mongoosePaginate from "mongoose-paginate-v2";
 const productsCollection = "products";
 
 const productSchema = new mongoose.Schema({
+    _id: mongoose.Schema.Types.ObjectId,
+    
     title: {
         type: String,
         required: [true, "The title is mandatory"],
@@ -31,8 +33,8 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: [true, "The category is mandatory"],
         enum: {
-            values: ["vegano", "vegetariano"],
-            message: "The category must be 'vegano' or 'vegetariano'",
+            values: ["vegan", "vegetarian"],
+            message: "The category must be 'vegan' or 'vegetarian'",
         },
     },
     thumbnail: {
