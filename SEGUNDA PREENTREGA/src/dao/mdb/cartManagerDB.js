@@ -1,4 +1,5 @@
 import { cartsModel } from "./models/carts.model.js";
+import mongoose from 'mongoose';
 
 export class CartManagerMDB {
     constructor() {
@@ -8,19 +9,28 @@ export class CartManagerMDB {
     // Get all carts
     async getCarts() {
         try {
-            const result = await this.model.find().populate("products.product").lean();
+            const result = await this.model.find().populate("products.product").lean()
             return result;
         } catch (error) {
-            console.log("getCarts: ", error.message);
-            throw new Error("Error retrieving carts");
+            if (error.message.includes("Cast to ObjectId failed")) {
+                console.log("getCarts: Invalid ObjectId in products.product");
+                throw new Error("Error retrieving carts. Invalid ObjectId in products.product");
+            } else {
+                console.log("getCarts: ", error.message);
+                throw new Error("Error retrieving carts");
+            }
         }
     }
 
     // Get a cart by ID
     async getCartById(cartId) {
         try {
-            const result = await this.model.findById(cartId).populate("products.product").lean();
-
+            if (!mongoose.Types.ObjectId.isValid(cartId)) {
+                throw new Error("Invalid cart ID");
+            }
+            const objectId = new mongoose.Types.ObjectId(cartId);
+            const result = await this.model.findById(objectId).populate("products.product").lean();
+            console.log(result)
             if (!result) {
                 throw new Error("Cart not found");
             }

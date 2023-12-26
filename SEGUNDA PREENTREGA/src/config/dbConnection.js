@@ -1,12 +1,12 @@
 import mongoose from "mongoose"
 import dotenv from "dotenv"
+import { config } from "./config.js"
 
 dotenv.config()
 
 export const connectDB = async () => {
     try {
-        await mongoose.connect(
-            "mongodb+srv://zxfabyxz:Asteroide15@cluster0.kpxierz.mongodb.net/?retryWrites=true&w=majority", {
+        await mongoose.connect(config.mongo.url,{           
                 useNewUrlParser: true,
                 useUnifiedTopology: true
             }

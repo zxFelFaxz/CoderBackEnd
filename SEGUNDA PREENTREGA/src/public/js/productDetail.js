@@ -3,7 +3,7 @@ const addToCartBtn = document.querySelectorAll(".btn-add-to-cart")
 
 addToCartBtn.forEach(async (btn) => {
     btn.addEventListener("click", async (e) => {
-        const cartId = "652793267676b6d069fc33e9" 
+        const cartId = "65864fede228d8d0b8c642fe" 
         const productId = e.target.getAttribute("data-product-id")
         const productTitle = e.target.getAttribute("data-product-title")
 

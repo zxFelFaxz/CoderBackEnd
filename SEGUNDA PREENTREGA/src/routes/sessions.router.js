@@ -1,58 +1,56 @@
 import { Router } from "express";
-import { sessionManager } from "../dao/index.js";
+import passport from "passport";
+import { config } from "../config/config.js";
 
 const router = Router();
 
-//Singup
-router.post("/signup", async (req, res) => {
-    try {
-        const signupForm = req.body
-        const createdUser = await sessionManager.registerUser(signupForm)
-        res.render("login", { createdUser, message: "User Registered" })
-    } catch (err) {
-        res.render("signup", { error: err.message })
-    }
+// Signup
+router.post("/signup", passport.authenticate("signupLocalStrategy", {
+    failureRedirect: "/api/sessions/fail-signup"
+}), async (req, res) => {
+    res.render("login", { message: "User registered :)"});
+});
+
+// Fail signup
+router.get("/fail-signup", (req, res) => {
+    res.render("signup", { error: "Error completing registration" });
+});
+
+// Signup with GitHub
+router.get("/signup-github", passport.authenticate("signupGithubStrategy"));
+
+// Callback with GitHub
+router.get(config.github.callbackUrl, passport.authenticate("signupGithubStrategy", {
+    failureRedirect: "/api/sessions/fail-signup"
+}), (req, res) => {
+    res.redirect("/products");
 });
 
 // Login
-router.post("/login", async(req,res)=>{
-    try {
-        const loginForm = req.body
+router.post("/login", passport.authenticate("loginLocalStrategy", {
+    failureRedirect: "/api/sessions/fail-login"
+}), async (req, res) => {
+    res.redirect("/products");
+});
 
-        if (loginForm.email === "adminCoder@coder.com" && loginForm.password === "adminCod3r123") {
-            req.session.email = loginForm.email
-            req.session.role = "admin"
-        } else {
-            const loggedUser = await sessionManager.loginUser(loginForm)
-
-            if (!loggedUser) {
-                return res.render("login", { error: "The data entered are incorrect" })
-            }
-            req.session.first_name = loggedUser.first_name
-            req.session.last_name = loggedUser.last_name
-            req.session.email = loggedUser.email
-            req.session.age = loggedUser.age
-            req.session.role = loggedUser.role
-        }
-        return res.redirect("/products")
-    } catch (error) {
-        res.render("login", { error: error.message })
-    }
-})
+// Fail login
+router.get("/fail-login", (req, res) => {
+    res.render("login", { error: "Error logging in. Please re-enter your credentials" });
+});
 
 // Logout
 router.get("/logout", async (req, res) => {
     try {
         req.session.destroy((err) => {
             if (err) {
-                return res.render("profile", { error: "Error logging out" })
+                return res.render("profile", { error: "Error closing the session" });
             } else {
-                return res.redirect("/login")
+                return res.redirect("/login");
             }
-        })
+        });
     } catch (error) {
-        res.render("logout", { error: "Error logging out" })
+        res.render("logout", { error: "Error closing the session" });
     }
-})
+});
 
-export { router as sessionsRouter }
+export { router as sessionsRouter };

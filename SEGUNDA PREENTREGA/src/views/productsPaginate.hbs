@@ -3,8 +3,9 @@
         <div class="greeting-message-container">
             {{#if userFirstName}}
                 <h3 class="greeting-message">Hi, <b>{{userFirstName}} {{userLastName}}</b></h3>
-            {{else}}
-                <h3 class="greeting-message">Hi, <b>admin</b></h3>
+            {{/if}}
+            {{#if userGitHubName}}
+                <h3 class="greeting-message">Hi, <b>{{userGitHubName}}</b></h3>
             {{/if}}
             <h4 class="role-message">You are <b class="user-role-role-message">{{userRole}}</b> here</h4>
         </div>
@@ -41,7 +42,7 @@
             {{/if}}
         </div>
     {{else}}
-        <h2 class="title-category">Could not load menu</h2>
+        <h2 class="title-category">Could not load the menu</h2>
     {{/if}}
 </div>
 

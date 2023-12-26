@@ -12,27 +12,29 @@ export class SessionManagerDB {
             return result
         } catch (error) {
             console.log("registerUser: ", error.message)
-            throw new Error ("Error completing registration")
+            throw new Error ("Error completing register")
         }
     }
 
     // Login
-    async loginUser(loginForm) {
+    async loginUser(email) {
         try {
-            const result = await this.model.findOne({ email: loginForm.email })
-
-            if (!result) {
-                return null
-            }
-            
-            if (result.password !== loginForm.password) {
-                return null
-            }
-            
+            const result = await this.model.findOne({ email })
             return result
         } catch (error) {
             console.log("loginUser: ", error.message)
-            throw new Error ("Error logging in. Please try again.")
+            throw new Error ("Error login")
+        }
+    }
+
+    // Obtener un usuario por ID
+    async getUserById(id){
+        try {
+            const result = await this.model.findById(id)
+            return result
+        } catch (error) {
+            console.log("getUserById: ", error.message)
+            throw new Error("Error getting user")
         }
     }
 }

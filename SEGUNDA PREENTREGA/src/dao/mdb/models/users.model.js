@@ -5,29 +5,49 @@ const usersCollection = "users"
 const userSchema = new mongoose.Schema({
     first_name: {
         type: String,
-        required: [true, "The name is mandatory"]
+        required: function() {
+            return !this.githubUser
+        }
     },
     last_name: {
         type: String,
-        required: [true, "The surname is compulsory"]
+        required: function() {
+            return !this.githubUser
+        }
     },
     email: {
         type: String,
-        required: [true, "The email is compulsory"],
-        unique: [true, "The entered email address is already registered"]
+        unique: [true, "The entered email address is already registered"],
+        required: function() {
+            return !this.githubUser
+        }
     },
     age: {
         type: Number,
-        required: [true, "Age is mandatory"]
+        required: function() {
+            return !this.githubUser
+        }
     },
     password: {
         type: String,
-        required: [true, "Password is mandatory"]
+        required: function() {
+            return !this.githubUser
+        }
     },
     role: {
         type: String,
-        enum: ["user", "admin"],
-        default: "user"
+        enum: ["usuario", "admin"],
+        default: "usuario"
+    },
+    githubUser: {
+        type: Boolean,
+        default: false
+    },
+    githubName: {
+        type: String,
+    },
+    githubUsername: {
+        type: String,
     }
 })
 

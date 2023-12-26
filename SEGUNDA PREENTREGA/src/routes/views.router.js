@@ -3,33 +3,33 @@ import { productManager, cartManager } from "../dao/index.js";
 
 const router = Router();
 
-//If there is no active session
-const publicRouteMiddleware = (req, res, next) => {
-    if (!req.session.email) {
-        return res.redirect("/login")
+// If there is no active session
+const noSessionMiddleware = (req, res, next) => {
+    if (!req.isAuthenticated()) {
+        return res.redirect("/login");
     }
-    next()
-}
+    next();
+};
 
-//If there is an active session
-const privateRouteMiddleware = (req, res, next) => {
-    if (req.session.email) {
-        return res.redirect("/profile")
+// If there is an active session
+const sessionMiddleware = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        return res.redirect("/profile");
     }
-    next()
-}
+    next();
+};
 
-// Home page with products
-router.get("/", publicRouteMiddleware, async (req, res) => {
+// Products on the home page (Redirect to login if there is no active session)
+router.get("/", noSessionMiddleware, async (req, res) => {
     try {
         const productsNoFilter = await productManager.getProductsNoFilter();
-        res.render("home", { productsNoFilter, title: "Something" });
+        res.render("home", { productsNoFilter, title: "Green Flavors - Uruguay" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
-// Real-time products page
+// Real-time products
 router.get("/realtimeproducts", async (req, res) => {
     try {
         res.render("realTimeProducts", { title: "Menu" });
@@ -38,11 +38,13 @@ router.get("/realtimeproducts", async (req, res) => {
     }
 });
 
-// All products page with pagination
-router.get("/products", async (req, res) => {
+// All products
+router.get("/products", noSessionMiddleware, async (req, res) => {
     try {
         const { limit = 8, page = 1, sort, category, stock } = req.query;
+
         const query = {};
+
         const options = {
             limit,
             page,
@@ -93,15 +95,18 @@ router.get("/products", async (req, res) => {
 
         res.render("productsPaginate", {
             dataProducts,
-            userFirstName: req.session.first_name,
-            userLastName: req.session.last_name,
-            userRole: req.session.role,})
+            userFirstName: req.user?.first_name,
+            userLastName: req.user?.last_name,
+            userRole: req.user?.role,
+            userGitHubName: req.user?.githubName,
+            userGitHubUsername: req.user?.githubUsername,
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
-// Product detail page
+// Product detail
 router.get("/products/:pid", async (req, res) => {
     try {
         const { pid } = req.params;
@@ -109,13 +114,13 @@ router.get("/products/:pid", async (req, res) => {
 
         product.title = product.title.toUpperCase();
 
-        res.render("productDetail", { product, title: `${product.title} - something` });
+        res.render("productDetail", { product, title: `${product.title}` });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
-// Cart page
+// Cart
 router.get("/carts/:cid", async (req, res) => {
     try {
         const { cid } = req.params;
@@ -127,37 +132,39 @@ router.get("/carts/:cid", async (req, res) => {
 });
 
 // Signup
-router.get("/signup", privateRouteMiddleware, async (req, res) => {
+router.get("/signup", sessionMiddleware, async (req, res) => {
     try {
-        res.render("signup", { title: "Register" })
+        res.render("signup", { title: "Sign Up" });
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ error: error.message });
     }
-})
+});
 
 // Login
-router.get("/login", privateRouteMiddleware, async (req, res) => {
+router.get("/login", sessionMiddleware, async (req, res) => {
     try {
-        res.render("login", { title: "Log in" })
+        res.render("login", { title: "Log In" });
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ error: error.message });
     }
-})
+});
 
-// Perfil
-router.get("/profile", publicRouteMiddleware, async (req, res) => {
+// Profile
+router.get("/profile", noSessionMiddleware, async (req, res) => {
     try {
-        res.render("profile", { 
-            userFirstName: req.session.first_name,
-            userLastName: req.session.last_name,
-            userEmail: req.session.email,
-            userAge: req.session.age,
-            userRole: req.session.role,
-            title: "Profile"
-        })   
+        res.render("profile", {
+            userFirstName: req.user?.first_name,
+            userLastName: req.user?.last_name,
+            userEmail: req.user?.email,
+            userAge: req.user?.age,
+            userRole: req.user?.role,
+            userGitHubName: req.user?.githubName,
+            userGitHubUsername: req.user?.githubUsername,
+            title: "Profile",
+        });
     } catch (error) {
-        res.status(500).json({ error: "Error getting profile" })
+        res.status(500).json({ error: "Error getting the profile" });
     }
-})
+});
 
 export { router as viewsRouter };

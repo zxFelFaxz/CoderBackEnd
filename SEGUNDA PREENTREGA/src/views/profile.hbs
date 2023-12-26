@@ -2,16 +2,20 @@
     <h1 class="title-category">PROFILE</h1>
     <div class="profile-container">
         <ul>
-            {{#if userFirstName}}
-                <li><b class="item-profile">Name:</b> <span class="data-item-profile">{{userFirstName}}</span></li>
-                <li><b class="item-profile">Surname:</b> <span class="data-item-profile">{{userLastName}}</span></li>
-                <li><b class="item-profile">Age:</b> <span class="data-item-profile">{{userAge}}</span></li>
+            {{#if userEmail}}
+                <li><b class="item-profile">Name: </b><span class="data-item-profile">{{userFirstName}}</span></li>
+                <li><b class="item-profile">Surname: </b><span class="data-item-profile">{{userLastName}}</span></li>
+                <li><b class="item-profile">Email: </b><span class="data-item-profile">{{userEmail}}</span></li>
+                <li><b class="item-profile">Age: </b><span class="data-item-profile">{{userAge}}</span></li>
             {{/if}}
-            <li><b class="item-profile">Email:</b> <span class="data-item-profile">{{userEmail}}</span></li>
-            <li><b class="item-profile">Role:</b> <span class="data-item-profile">{{userRole}}</span></li>
+            {{#if userGitHubUsername}}
+                <li><b class="item-profile">Name and surname: </b><span class="data-item-profile">{{userGitHubName}}</span></li>
+                <li><b class="item-profile">GitHub User: </b><span class="data-item-profile">{{userGitHubUsername}}</span></li>
+            {{/if}}
+            <li><b class="item-profile">Role: </b><span class="data-item-profile">{{userRole}}</span></li>
         </ul>
     </div>
     <div class="btn-logout-container">
-        <button type="button" class="btn-logout" onclick="window.location.href = '/api/sessions/logout'">Log out</button>
+        <button type="button" class="btn-logout" onclick="window.location.href = '/api/sessions/logout'">Logout</button>
     </div>
 </div>
