@@ -23,7 +23,7 @@ const sessionMiddleware = (req, res, next) => {
 router.get("/", noSessionMiddleware, async (req, res) => {
     try {
         const productsNoFilter = await productManager.getProductsNoFilter();
-        res.render("home", { productsNoFilter, title: "Green Flavors - Uruguay" });
+        res.render("home", { productsNoFilter, title: "title" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

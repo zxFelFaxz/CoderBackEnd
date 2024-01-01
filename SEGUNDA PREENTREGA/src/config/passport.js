@@ -50,9 +50,9 @@ export const initializePassport = () => {
     // Signup with GitHub
     passport.use("signupGithubStrategy", new githubStrategy(
         {
-            clientID: config.github.clientId,
-            clientSecret: config.github.clientSecret,
-            callbackURL: `http://localhost:8080/api/sessions/${config.github.callbackUrl}`
+            clientID: "Iv1.b5ecd8d5dbca3226",
+            clientSecret: "6a3efa9360db7187b73bdd7de64c01c51e147547",
+            callbackURL: "http://localhost:8080/api/sessions/callbackGithub"
         },
 
         async (accessToken, refreshToken, profile, done) => {

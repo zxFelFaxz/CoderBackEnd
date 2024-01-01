@@ -20,7 +20,7 @@ router.get("/fail-signup", (req, res) => {
 router.get("/signup-github", passport.authenticate("signupGithubStrategy"));
 
 // Callback with GitHub
-router.get(config.github.callbackUrl, passport.authenticate("signupGithubStrategy", {
+router.get("/callbackGithub", passport.authenticate("signupGithubStrategy", {
     failureRedirect: "/api/sessions/fail-signup"
 }), (req, res) => {
     res.redirect("/products");
