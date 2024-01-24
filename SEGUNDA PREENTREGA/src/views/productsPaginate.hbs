@@ -1,13 +1,13 @@
 <div class="app-content container">
-    {{#if userRole}}
+    {{#if user.role}}
         <div class="greeting-message-container">
-            {{#if userFirstName}}
-                <h3 class="greeting-message">Hi, <b>{{userFirstName}} {{userLastName}}</b></h3>
+            {{#if user.first_name}}
+                <h3 class="greeting-message">Hi, <b>{{user.first_name}} {{user.last_name}}</b></h3>
             {{/if}}
-            {{#if userGitHubName}}
-                <h3 class="greeting-message">Hi, <b>{{userGitHubName}}</b></h3>
+            {{#if user.githubName}}
+                <h3 class="greeting-message">Hi, <b>{{user.githubName}}</b></h3>
             {{/if}}
-            <h4 class="role-message">You are <b class="user-role-role-message">{{userRole}}</b> here</h4>
+            <h4 class="role-message">You're <b class="user-role-role-message">{{user.role}}</b> Here</h4>
         </div>
     {{/if}}
     <h1 class="title-category">MENU</h1>
@@ -42,7 +42,7 @@
             {{/if}}
         </div>
     {{else}}
-        <h2 class="title-category">Could not load the menu</h2>
+        <h2 class="title-category">Could not load Menu</h2>
     {{/if}}
 </div>
 

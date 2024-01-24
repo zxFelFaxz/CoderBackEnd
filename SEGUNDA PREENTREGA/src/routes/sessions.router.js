@@ -1,56 +1,36 @@
-import { Router } from "express";
-import passport from "passport";
-import { config } from "../config/config.js";
+import { Router } from "express"
+import passport from "passport"
+import { config } from "../config/config.js"
+import { SessionsController } from "../controllers/sessions.controller.js"
 
-const router = Router();
+const router = Router()
 
 // Signup
 router.post("/signup", passport.authenticate("signupLocalStrategy", {
-    failureRedirect: "/api/sessions/fail-signup"
-}), async (req, res) => {
-    res.render("login", { message: "User registered :)"});
-});
+    failureRedirect: "/api/sessions/fail-signup",
+    session: false
+}), SessionsController.redirectLogin)
 
 // Fail signup
-router.get("/fail-signup", (req, res) => {
-    res.render("signup", { error: "Error completing registration" });
-});
+router.get("/fail-signup", SessionsController.failSignup)
 
 // Signup with GitHub
-router.get("/signup-github", passport.authenticate("signupGithubStrategy"));
+router.get("/signup-github", passport.authenticate("signupGithubStrategy"))
 
 // Callback with GitHub
-router.get("/callbackGithub", passport.authenticate("signupGithubStrategy", {
+router.get(config.github.callbackUrl, passport.authenticate("signupGithubStrategy", {
     failureRedirect: "/api/sessions/fail-signup"
-}), (req, res) => {
-    res.redirect("/products");
-});
+}), SessionsController.redirectProducts)
 
 // Login
 router.post("/login", passport.authenticate("loginLocalStrategy", {
     failureRedirect: "/api/sessions/fail-login"
-}), async (req, res) => {
-    res.redirect("/products");
-});
+}), SessionsController.redirectProducts)
 
 // Fail login
-router.get("/fail-login", (req, res) => {
-    res.render("login", { error: "Error logging in. Please re-enter your credentials" });
-});
+router.get("/fail-login", SessionsController.failLogin)
 
 // Logout
-router.get("/logout", async (req, res) => {
-    try {
-        req.session.destroy((err) => {
-            if (err) {
-                return res.render("profile", { error: "Error closing the session" });
-            } else {
-                return res.redirect("/login");
-            }
-        });
-    } catch (error) {
-        res.render("logout", { error: "Error closing the session" });
-    }
-});
+router.get("/logout", SessionsController.logout)
 
-export { router as sessionsRouter };
+export { router as sessionsRouter }

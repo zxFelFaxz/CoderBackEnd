@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import { CartsService } from "../../../services/carts.service.js"
 
 const usersCollection = "users"
 
@@ -17,7 +18,7 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        unique: [true, "The entered email address is already registered"],
+        unique: [true, "The entered email is already registered."],
         required: function() {
             return !this.githubUser
         }
@@ -34,20 +35,35 @@ const userSchema = new mongoose.Schema({
             return !this.githubUser
         }
     },
+    cart: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "carts"
+    },
     role: {
         type: String,
-        enum: ["user", "admin"],
-        default: "user"
+        enum: ["usuario", "admin"],
+        default: "usuario"
     },
     githubUser: {
         type: Boolean,
         default: false
     },
     githubName: {
-        type: String,
+        type: String
     },
     githubUsername: {
         type: String,
+        unique: [true, "The entered GitHub user is already registered."]
+    }
+})
+
+// Assign cart to new user
+userSchema.pre("save", async function(next) {
+    try {
+        const newCartUser = await CartsService.createCart()
+        this.cart = newCartUser._id
+    } catch (error) {
+        next(error)
     }
 })
 

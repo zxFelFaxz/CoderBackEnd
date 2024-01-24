@@ -1,6 +1,6 @@
-import { ProductManagerMDB } from "./mdb/productManagerDB.js"
-import { CartManagerMDB } from "./mdb/cartManagerDB.js"
-import { SessionManagerDB } from "./mdb/sessionManagerDB.js";
+import { ProductManagerMDB } from "./mdb/managers/productManagerDB.js";
+import { CartManagerMDB } from "./mdb/managers/cartManagerDB.js";
+import { SessionManagerDB } from "./mdb/managers/sessionManagerDB.js";
 
 export const productManager = new ProductManagerMDB();
 export const cartManager = new CartManagerMDB();

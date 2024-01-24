@@ -2,80 +2,76 @@ import express from "express"
 import { engine } from "express-handlebars"
 import session from "express-session"
 import MongoStore from "connect-mongo"
-import { connectDB } from "./config/dbConnection.js"
+import { ConnectDB } from "./config/dbConnection.js"
 import passport from "passport"
 import { initializePassport } from "./config/passport.js"
 import { config } from "./config/config.js"
 import { Server } from "socket.io"
 import path from "path"
 import { __dirname } from "./utils.js"
-import { productManager } from "./dao/index.js"
+import { ProductsService } from "./services/products.service.js"
 import { viewsRouter } from "./routes/views.router.js"
 import { sessionsRouter } from "./routes/sessions.router.js"
 import { productsRouter } from "./routes/products.router.js"
 import { cartsRouter } from "./routes/carts.router.js"
 
-
-
-const port = process.env.PORT || 8080
+const port = config.server.port
 const app = express()
 
 const httpServer = app.listen(port, () => {
-    console.log("Server running on the port: ", port)
+    console.log("Servidor funcionando en el puerto: ", port)
 })
 
 const socketServer = new Server(httpServer)
 
-// Database connection
-connectDB()
+// Conexión base de datos
+ConnectDB.getInstance()
 
-// Config handlebars
-app.engine(".hbs", engine({extname: ".hbs"}))
+// Configuración handlebars
+app.engine(".hbs", engine({ extname: ".hbs" }))
 app.set("view engine", ".hbs")
 app.set("views", path.join(__dirname, "/views"))
 
-//Session configuration
+// Configuración de session
 app.use(session ({
     store: MongoStore.create ({
-        mongoUrl: config.mongo.url,
-        ttl: 3000,
+        ttl: 10800000,
+        mongoUrl: config.mongo.url
     }),
-    secret: process.env.SESSION_SECRET,
+    secret: "Asteroide15",
     resave: true,
-    saveUninitialized: true,
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 24,}
+    saveUninitialized: true
 }))
 
-// Passport configuration
+// Configuración de passport
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
 
-// Config socket.io
+// Configuración socket.io
 socketServer.on("connection", async (socket) => {
-    console.log("Client logged in: ", socket.id)
+    console.log("Cliente conectado: ", socket.id)
 
-    // Obtain products
-    const products = await productManager.getProductsNoFilter()
+    // Obtener productos
+    const products = await ProductsService.getProductsNoFilter()
     socket.emit("productsArray", products)
 
-    // Add customer socket product
-    socket.on("addProduct", async (productsData) => {
+    // Agregar el producto del socket del cliente
+    socket.on("addProduct", async (productInfo) => {
         try {
-            const result = await productManager.addProduct(productsData)
-            const products = await productManager.getProductsNoFilter()
+            const result = await ProductsService.addProduct(productInfo)
+            const products = await ProductsService.getProductsNoFilter()
             socketServer.emit("productsArray", products)
         } catch (error) {
             console.error(error.message)
         }
     })
 
-    // Remove the product from the client socket
+    // Eliminar el producto del socket del cliente
     socket.on("deleteProduct", async (productId) => {
         try {
-            const result = await productManager.deleteProduct(productId)
-            const products = await productManager.getProducts()
+            const result = await ProductsService.deleteProduct(productId)
+            const products = await ProductsService.getProductsNoFilter()
             socketServer.emit("productsArray", products)
         } catch (error) {
             console.error(error.message)
@@ -85,7 +81,7 @@ socketServer.on("connection", async (socket) => {
 
 // Middlewares
 app.use(express.json())
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, "/public")))
 
 // Rutas

@@ -36,7 +36,8 @@ export const initializePassport = () => {
                     email: username,
                     age,
                     password: createHash(password),
-                    role: "user"
+                    role: (username === config.adminInfo.adminEmail && password === config.adminInfo.adminPassword) ? "admin" : "user",
+                    githubUsername: `Registrado con email: ${username}`
                 };
 
                 const createdUser = await sessionManager.registerUser(newUser);
@@ -50,9 +51,9 @@ export const initializePassport = () => {
     // Signup with GitHub
     passport.use("signupGithubStrategy", new githubStrategy(
         {
-            clientID: "Iv1.b5ecd8d5dbca3226",
-            clientSecret: "6a3efa9360db7187b73bdd7de64c01c51e147547",
-            callbackURL: "http://localhost:8080/api/sessions/callbackGithub"
+            clientID: config.github.clientId,
+            clientSecret: config.github.clientSecret,
+            callbackURL: `http://localhost:8080/api/sessions${config.github.callbackUrl}`
         },
 
         async (accessToken, refreshToken, profile, done) => {
@@ -70,6 +71,7 @@ export const initializePassport = () => {
                     githubName: profile._json.name,
                     githubUsername: profile.username,
                     role: "user",
+                    email: `Registrado con GitHub: ${profile.username}`
                 };
 
                 const createdUser = await sessionManager.registerUser(newUser);

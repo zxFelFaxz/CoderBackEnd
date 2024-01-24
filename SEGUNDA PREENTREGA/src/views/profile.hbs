@@ -2,17 +2,17 @@
     <h1 class="title-category">PROFILE</h1>
     <div class="profile-container">
         <ul>
-            {{#if userEmail}}
-                <li><b class="item-profile">Name: </b><span class="data-item-profile">{{userFirstName}}</span></li>
-                <li><b class="item-profile">Surname: </b><span class="data-item-profile">{{userLastName}}</span></li>
-                <li><b class="item-profile">Email: </b><span class="data-item-profile">{{userEmail}}</span></li>
-                <li><b class="item-profile">Age: </b><span class="data-item-profile">{{userAge}}</span></li>
+            {{#if user.first_name}}
+                <li><b class="item-profile">Name: </b><span class="data-item-profile">{{user.first_name}}</span></li>
+                <li><b class="item-profile">Surname: </b><span class="data-item-profile">{{user.last_name}}</span></li>
+                <li><b class="item-profile">Email: </b><span class="data-item-profile">{{user.email}}</span></li>
+                <li><b class="item-profile">Age: </b><span class="data-item-profile">{{user.age}}</span></li>
             {{/if}}
-            {{#if userGitHubUsername}}
-                <li><b class="item-profile">Name and surname: </b><span class="data-item-profile">{{userGitHubName}}</span></li>
-                <li><b class="item-profile">GitHub User: </b><span class="data-item-profile">{{userGitHubUsername}}</span></li>
+            {{#if user.githubUser}}
+                <li><b class="item-profile">Name and surname: </b><span class="data-item-profile">{{user.githubName}}</span></li>
+                <li><b class="item-profile">GitHub User: </b><span class="data-item-profile">{{user.githubUsername}}</span></li>
             {{/if}}
-            <li><b class="item-profile">Role: </b><span class="data-item-profile">{{userRole}}</span></li>
+            <li><b class="item-profile">Role: </b><span class="data-item-profile">{{user.role}}</span></li>
         </ul>
     </div>
     <div class="btn-logout-container">

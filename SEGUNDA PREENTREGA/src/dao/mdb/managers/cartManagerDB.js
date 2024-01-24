@@ -1,4 +1,4 @@
-import { cartsModel } from "./models/carts.model.js";
+import { cartsModel } from "../models/carts.model.js";
 import mongoose from 'mongoose';
 
 export class CartManagerMDB {

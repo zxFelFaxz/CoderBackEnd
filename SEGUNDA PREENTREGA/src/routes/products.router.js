@@ -1,119 +1,22 @@
 import { Router } from "express";
 import { uploader } from "../utils.js";
-import { productManager } from "../dao/index.js";
+import { ProductsController } from "../controllers/products.controller.js";
 
 const router = Router();
 
-// Get all products
-router.get("/", async (req, res) => {
-    try {
-        const { limit = 8, page = 1, sort, category, stock } = req.query;
-        const query = {};
-        const options = {
-            limit,
-            page,
-            sort,
-            lean: true
-        };
+// Get all products (http://localhost:8080/api/products || http://localhost:8080/api/products?limit=1&page=1)
+router.get("/", ProductsController.getProducts);
 
-        // Filter by category
-        if (category) {
-            query.category = category;
-        }
+// Get a product by ID (http://localhost:8080/api/products/pid)
+router.get("/:pid", ProductsController.getProductById);
 
-        // Filter by stock
-        if (stock) {
-            if (stock === "false" || stock == 0) {
-                query.stock = 0;
-            } else {
-                query.stock = stock;
-            }
-        }
+// Add a product (POST: http://localhost:8080/api/products)
+router.post("/", uploader.single("thumbnail"), ProductsController.addProduct);
 
-        // Sort by price
-        if (sort) {
-            if (sort === "asc") {
-                options.sort = { price: 1 };
-            } else if (sort === "desc") {
-                options.sort = { price: -1 };
-            }
-        }
+// Update a product (PUT: http://localhost:8080/api/products/pid)
+router.put("/:pid", uploader.single("thumbnail"), ProductsController.updateProduct);
 
-        const products = await productManager.getProducts(query, options);
-        
-        const baseUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
-        
-        const dataProducts = {
-            status: "success",
-            payload: products.docs,
-            totalPages: products.totalPages,
-            prevPage: products.prevPage,
-            nextPage: products.nextPage,
-            page: products.page,
-            hasPrevPage: products.hasPrevPage,
-            hasNextPage: products.hasNextPage,
-            prevLink: products.hasPrevPage ? `${baseUrl.replace(`page=${products.page}`, `page=${products.prevPage}`)}` : null,
-            nextLink: products.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${products.page}`, `page=${products.nextPage}`) : baseUrl.concat(`?page=${products.nextPage}`) : null,
-        };
-
-        res.status(201).json({ data: dataProducts });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Get a product by ID
-router.get("/:pid", async (req, res) => {
-    try {
-        const { pid } = req.params;
-        const product = await productManager.getProductById(pid);
-        
-        res.status(201).json({ data: product });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Add a product
-router.post("/", uploader.single("thumbnail"), async (req, res) => {
-    try {
-        const productInfo = req.body;
-        const thumbnailFile = req.file ? req.file.filename : undefined;
-
-        productInfo.thumbnail = thumbnailFile;
-
-        const addedProduct = await productManager.addProduct(productInfo);
-        res.status(201).json({ data: addedProduct });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Update a product
-router.put("/:pid", uploader.single("thumbnail"), async (req, res) => {
-    try {
-        const { pid } = req.params;
-        const updateFields = req.body;
-        const thumbnailFile = req.file ? req.file.filename : undefined;
-
-        updateFields.thumbnail = thumbnailFile;
-
-        const updatedProduct = await productManager.updateProduct(pid, updateFields);
-        res.status(201).json({ data: updatedProduct });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Delete a product
-router.delete("/:pid", async (req, res) => {
-    try {
-        const { pid } = req.params;
-        const deletedProduct = await productManager.deleteProduct(pid);
-        res.status(200).json({ data: deletedProduct });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
+// Delete a product (DELETE: http://localhost:8080/api/products/pid)
+router.delete("/:pid", ProductsController.deleteProduct);
 
 export { router as productsRouter };

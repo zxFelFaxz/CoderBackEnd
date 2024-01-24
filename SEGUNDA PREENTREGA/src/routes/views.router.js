@@ -1,38 +1,24 @@
 import { Router } from "express";
-import { productManager, cartManager } from "../dao/index.js";
+import { noSessionMiddleware, sessionMiddleware } from "../middleware/sessionsViews.middleware.js";
+import { ProductsService } from "../services/products.service.js";
+import { CartsService } from "../services/carts.service.js";
 
 const router = Router();
 
-// If there is no active session
-const noSessionMiddleware = (req, res, next) => {
-    if (!req.isAuthenticated()) {
-        return res.redirect("/login");
-    }
-    next();
-};
-
-// If there is an active session
-const sessionMiddleware = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        return res.redirect("/profile");
-    }
-    next();
-};
-
-// Products on the home page (Redirect to login if there is no active session)
+// Products on home page (Redirect to login if no active session)
 router.get("/", noSessionMiddleware, async (req, res) => {
     try {
-        const productsNoFilter = await productManager.getProductsNoFilter();
-        res.render("home", { productsNoFilter, title: "title" });
+        const productsNoFilter = await ProductsService.getProductsNoFilter();
+        res.render("home", { productsNoFilter, user: req.user, title: "title" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
-// Real-time products
-router.get("/realtimeproducts", async (req, res) => {
+// Products in real-time products page
+router.get("/realtimeproducts", noSessionMiddleware, async (req, res) => {
     try {
-        res.render("realTimeProducts", { title: "Menu" });
+        res.render("realTimeProducts", { user: req.user, title: "Menu" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -44,12 +30,11 @@ router.get("/products", noSessionMiddleware, async (req, res) => {
         const { limit = 8, page = 1, sort, category, stock } = req.query;
 
         const query = {};
-
         const options = {
             limit,
             page,
             sort,
-            lean: true,
+            lean: true
         };
 
         // Filter by category
@@ -59,11 +44,7 @@ router.get("/products", noSessionMiddleware, async (req, res) => {
 
         // Filter by stock
         if (stock) {
-            if (stock === "false" || stock == 0) {
-                query.stock = 0;
-            } else {
-                query.stock = stock;
-            }
+            query.stock = stock === "false" || stock == 0 ? 0 : stock;
         }
 
         // Sort by price
@@ -75,8 +56,7 @@ router.get("/products", noSessionMiddleware, async (req, res) => {
             }
         }
 
-        const products = await productManager.getProducts(query, options);
-
+        const products = await ProductsService.getProducts(query, options);
         const baseUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
 
         const dataProducts = {
@@ -89,18 +69,10 @@ router.get("/products", noSessionMiddleware, async (req, res) => {
             hasPrevPage: products.hasPrevPage,
             hasNextPage: products.hasNextPage,
             prevLink: products.hasPrevPage ? `${baseUrl.replace(`page=${products.page}`, `page=${products.prevPage}`)}` : null,
-            nextLink: products.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${products.page}`, `page=${products.nextPage}`) : baseUrl.concat(`?page=${products.nextPage}`) : null,
-            title: "Menu",
+            nextLink: products.hasNextPage ? (baseUrl.includes("page") ? baseUrl.replace(`page=${products.page}`, `page=${products.nextPage}`) : baseUrl.concat(`?page=${products.nextPage}`)) : null,
+            title: "Menu"
         };
-
-        res.render("productsPaginate", {
-            dataProducts,
-            userFirstName: req.user?.first_name,
-            userLastName: req.user?.last_name,
-            userRole: req.user?.role,
-            userGitHubName: req.user?.githubName,
-            userGitHubUsername: req.user?.githubUsername,
-        });
+        res.render("productsPaginate", { dataProducts, user: req.user });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -110,11 +82,11 @@ router.get("/products", noSessionMiddleware, async (req, res) => {
 router.get("/products/:pid", async (req, res) => {
     try {
         const { pid } = req.params;
-        const product = await productManager.getProductById(pid);
+        const product = await ProductsService.getProductById(pid);
 
         product.title = product.title.toUpperCase();
 
-        res.render("productDetail", { product, title: `${product.title}` });
+        res.render("productDetail", { product, user: req.user, title: `${product.title} ` });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -124,8 +96,11 @@ router.get("/products/:pid", async (req, res) => {
 router.get("/carts/:cid", async (req, res) => {
     try {
         const { cid } = req.params;
-        const cart = await cartManager.getCartById(cid);
-        res.render("cart", { cart, title: "Cart" });
+        const cart = await CartsService.getCartById(cid);
+
+        const totalPrice = cart.products.reduce((acc, prod) => acc + prod.quantity * prod.product.price, 0);
+
+        res.render("cart", { cart, totalPrice, user: req.user, title: "Cart" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -143,7 +118,7 @@ router.get("/signup", sessionMiddleware, async (req, res) => {
 // Login
 router.get("/login", sessionMiddleware, async (req, res) => {
     try {
-        res.render("login", { title: "Log In" });
+        res.render("login", { title: "Login" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -152,18 +127,9 @@ router.get("/login", sessionMiddleware, async (req, res) => {
 // Profile
 router.get("/profile", noSessionMiddleware, async (req, res) => {
     try {
-        res.render("profile", {
-            userFirstName: req.user?.first_name,
-            userLastName: req.user?.last_name,
-            userEmail: req.user?.email,
-            userAge: req.user?.age,
-            userRole: req.user?.role,
-            userGitHubName: req.user?.githubName,
-            userGitHubUsername: req.user?.githubUsername,
-            title: "Profile",
-        });
+        res.render("profile", { user: req.user, title: "Profile" });
     } catch (error) {
-        res.status(500).json({ error: "Error getting the profile" });
+        res.status(500).json({ error: "Error fetching profile" });
     }
 });
 
