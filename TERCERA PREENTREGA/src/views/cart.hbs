@@ -1,0 +1,82 @@
+<div class="app-content container">
+    <h1 class="title-category">CART</h1>
+    <div class="message-session"></div>
+    <div class="error-session"></div>
+    {{#if cart.products.length}}
+        <div class="table-cart-container">
+            <table class="section-table-cart">
+                <thead>
+                    <tr>
+                        <th class="section-cart" colspan="4">MENU</th>
+                        <th class="section-cart" colspan="2">PRICE</th>
+                        <th class="section-cart" colspan="3">QUANTITY</th>
+                        <th class="section-cart" colspan="2">SUBTOTAL</th>
+                        <th class="section-cart" colspan="1"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each cart.products}}
+                        <tr>
+                            <td class="divider-card-cart" colspan="4">
+                                <a href="/products/{{this.product._id}}" class="info-card-cart">
+                                    {{#if product.thumbnail}}
+                                        <img class="img-card-cart" src="/assets/imgProducts/{{this.product.thumbnail}}" alt="{{this.product.title}}">
+                                    {{/if}}
+                                    <div>
+                                        <p class="text-card-cart">{{this.product.title}}</p>
+                                        <p class="text-card-cart category-card d-inline" data-category="{{this.product.category}}">
+                                            {{this.product.category}}
+                                        </p>
+                                    </div>
+                                </a>
+                            </td>
+                            <td class="text-card-cart text-center divider-card-cart" colspan="2">${{this.product.price}}</td>
+                            <td class="text-card-cart text-center divider-card-cart" colspan="3">
+                                <button class="update-product-quantity-in-cart btn-count-cart btn btn-primary" data-product-id="{{this.product._id}}" data-product-price="{{this.product.price}}" data-cart-id="{{../userInfoDto.cart}}">-</button>
+                                <span class="quantity-product-in-cart">{{this.quantity}}</span>
+                                <button class="update-product-quantity-in-cart btn-count-cart btn btn-primary" data-product-id="{{this.product._id}}" data-product-price="{{this.product.price}}" data-cart-id="{{../userInfoDto.cart}}">+</button>
+                            </td>
+                            <td class="text-card-cart text-center divider-card-cart" colspan="2">
+                                <span class="subtotal-price-element">${{this.subtotalPrice}}</span>
+                            </td>
+                            <td class="divider-card-cart" colspan="1">
+                                <button class="delete-product-in-cart btn-delete-cart btn btn-primary" data-product-id="{{this.product._id}}" data-product-title="{{this.product.title}}" data-cart-id="{{../userInfoDto.cart}}">
+                                    <img src="/assets/icon-trash.png" alt="Eliminar">
+                                </button>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-center" colspan="4">
+                            <button class="delete-all-products-in-cart btn-empty-cart btn btn-primary" data-cart-id="{{userInfoDto.cart}}">Empty cart</button>
+                        </td>
+                        <td class="total-price-cart text-center" colspan="4">
+                            <span class="total-price-element">TOTAL: ${{totalPrice}}</span>
+                        </td>
+                        <td class="text-center" colspan="4">
+                            <button class="finish-purchase btn-continue-buy btn btn-primary" data-cart-id="{{userInfoDto.cart}}">Finalize purchase</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" colspan="12">
+                            <button class="btn-back-menu btn btn-primary" onclick="window.location.href = '/products'">Back to menu</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    {{else}}
+        <h2 class="title-category">Your cart is empty</h2>
+        <div class="empty-cart-container">
+            <div>
+                <img class="img-empty-cart" src="/assets/icon-empty-cart.png" alt="Carrito vacío">
+                <button class="btn-back-menu d-block" onclick="window.location.href = '/products'">Back to menu</button>
+            </div>
+        </div>
+    {{/if}}
+</div>
+
+<script type="module" src="/js/main.js"></script>
+<script type="module" src="/js/cart.js"></script>

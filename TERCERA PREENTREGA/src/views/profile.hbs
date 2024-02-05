@@ -1,0 +1,21 @@
+<div class="app-content container">
+    <h1 class="title-category">YOUR PROFILE</h1>
+    <div class="profile-container">
+        <ul>
+            <li><b class="item-profile">Name and Last Name: </b><span class="data-item-profile">{{userInfoDto.full_name}}</span></li>
+            {{#if userInfoDto.email}}
+                <li><b class="item-profile">Email: </b><span class="data-item-profile">{{userInfoDto.email}}</span></li>
+                <li><b class="item-profile">Age: </b><span class="data-item-profile">{{userInfoDto.age}}</span></li>
+            {{/if}}
+            {{#if userInfoDto.github_username}}
+                <li><b class="item-profile">GitHub user: </b><span class="data-item-profile">{{userInfoDto.github_username}}</span></li>
+            {{/if}}
+            <li><b class="item-profile">Role: </b><span class="data-item-profile">{{userInfoDto.role}}</span></li>
+        </ul>
+    </div>
+    <div class="btn-logout-container">
+        <button type="button" class="btn-logout" onclick="window.location.href = '/api/sessions/logout'">Logout</button>
+    </div>
+</div>
+
+<script type="module" src="/js/main.js"></script>
