@@ -24,15 +24,15 @@
 <body>
     <nav class="container-fluid navbar navbar-expand-lg">
         <div class="container">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <a class="navbar-brand" href="/">
-                <img src="" alt="">
+                <img src="##" alt="LOGO">
             </a>
-            <button class="btn-cart-widget" onclick="window.location.href = '/carts/65879098fdfa8ec581a533ce'">
+            <button class="btn-cart-widget" data-cart-id="{{#if userInfoDto}}{{userInfoDto.cart}}{{/if}}" onclick="window.location.href = '{{#if userInfoDto}}/carts/{{userInfoDto.cart}}{{/if}}'">
                 <img class="icon-cart-widget" src="/assets/icon-cart.png" alt="Carrito">
+                <span class="counter-cart-widget d-none">0</span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mx-auto">

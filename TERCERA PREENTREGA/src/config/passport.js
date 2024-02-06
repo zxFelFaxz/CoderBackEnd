@@ -41,7 +41,7 @@ export const initializePassport = () => {
                     github_user: false
                 })
 
-                const createdUser = await usersDao.registerUser(newUserDto)
+                const createdUser = await sessionManager.registerUser(newUserDto)
                 return done(null, createdUser)
             } catch (error) {
                 return done(error)

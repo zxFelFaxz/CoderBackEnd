@@ -32,7 +32,7 @@ export class SessionManagerDB {
         }
     }
 
-    // Obtener un usuario por ID
+    // Get a user by ID
     async getUserById(userId){
         try {
             const result = await this.model.findById(userId).lean()
