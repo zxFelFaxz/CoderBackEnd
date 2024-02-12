@@ -20,4 +20,7 @@ router.put("/:pid", uploader.single("thumbnail"), noSessionMiddleware, checkRole
 // Delete a product (DELETE: http://localhost:8080/api/products/pid)
 router.delete("/:pid", noSessionMiddleware, checkRoleMiddleware(["admin"]), ProductsController.deleteProduct)
 
+// Mocking products (GET: http://localhost:8080/api/products/mockingproducts)
+router.get("/mockingproducts", ProductsController.mockingProducts)
+
 export { router as productsRouter }

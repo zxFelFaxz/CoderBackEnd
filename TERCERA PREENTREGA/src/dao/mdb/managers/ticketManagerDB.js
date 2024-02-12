@@ -27,7 +27,7 @@ export class TicketManagerDB {
         }
     }
 
-    // Obtain a purchase ticket by ID
+    // Get a purchase ticket by ID
     async getTicketById(ticketId) {
         try {
             const result = await this.model.findById(ticketId).lean()

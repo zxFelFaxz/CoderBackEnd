@@ -1,12 +1,17 @@
-import { ProductsService } from "../services/products.service.js"
+import { ProductsService } from "../services/products.service.js";
+import { CustomError } from "../services/customErrors/customError.service.js";
+import { Errors } from "../enums/Errors.js";
+import { dataBaseGetError, paramError } from "../services/customErrors/errors/generalErrors.service.js";
+import { addProductError, updateProductError, mockingProductsError } from "../services/customErrors/errors/productsErrors.service.js";
+import { productsModel } from "../dao/mdb/models/products.model.js";
+import { generateProductMock } from "../helpers/mock.js";
 
 export class ProductsController {
-    static getProducts = async (req, res) => {
+    static getProducts = async (req, res,  next) => {
         try {
             const { limit = 8, page = 1, sort, category, stock } = req.query
     
-            const query = {}
-    
+            const query = {}    
             const options = {
                 limit,
                 page,
@@ -38,6 +43,16 @@ export class ProductsController {
             }
     
             const products = await ProductsService.getProducts(query, options)
+
+            // Custom error
+            if (!products) {
+                CustomError.createError ({
+                    name: "get products error",
+                    cause: dataBaseGetError(),
+                    message: "Error getting products",
+                    errorCode: Errors.DATABASE_ERROR
+                })
+            }
             
             const baseUrl = req.protocol + "://" + req.get("host") + req.originalUrl
             
@@ -54,9 +69,9 @@ export class ProductsController {
                 nextLink: products.hasNextPage ? baseUrl.includes("page") ? baseUrl.replace(`page=${products.page}`, `page=${products.nextPage}`) : baseUrl.concat(`?page=${products.nextPage}`) : null,
             }
     
-            res.status(201).json({ data: dataProducts })
+            res.json({ status: "success", data: dataProducts })
         } catch (error) {
-            res.status(500).json({ error: error.message })
+            next(error)
         }
     }
 
@@ -64,48 +79,132 @@ export class ProductsController {
         try {
             const { pid } = req.params
             const product = await ProductsService.getProductById(pid)
-            res.status(201).json({ data: product })
+            
+            // Custom error
+            if (!product) {
+                CustomError.createError ({
+                    name: "get product by id error",
+                    cause: paramError(pid),
+                    message: "Error getting the product",
+                    errorCode: Errors.INVALID_PARAM_ERROR
+                })
+            }
+
+            res.json({ status: "success", data: product })
         } catch (error) {
-            res.status(500).json({ error: error.message })
+           next(error)
         }
     }
 
-    static addProduct = async (req, res) => {
+    static addProduct = async (req, res, next) => { 
         try {
             const productInfo = req.body
             const thumbnailFile = req.file ? req.file.filename : undefined
-    
-            productInfo.thumbnail = thumbnailFile
-    
+
+            // Custom error
+            const newProduct = new productsModel(productInfo)
+
+            try {
+                await newProduct.validate()
+            } catch {
+                CustomError.createError ({
+                    name: "add product error",
+                    cause: addProductError(productInfo),
+                    message: "Error validating data",
+                    errorCode: Errors.INVALID_BODY_ERROR
+                })
+            }
+        
+            newProduct.thumbnail = thumbnailFile
+
             const addedProduct = await ProductsService.addProduct(productInfo)
-            res.status(201).json({ data: addedProduct })
+            res.json({ status: "success", message: "Product created", data: addedProduct })
         } catch (error) {
-            res.status(500).json({ error: error.message })
+            next(error)
         }
     }
 
-    static updateProduct = async (req, res) => {
+    static updateProduct = async (req, res, next) => {
         try {
             const { pid } = req.params
             const updateFields = req.body
             const thumbnailFile = req.file ? req.file.filename : undefined
     
-            updateFields.thumbnail = thumbnailFile
+            // Custom error
+            const { title, description, code, price, stock, category } = updateFields
+
+            if (
+                title && typeof title !== "string" ||
+                description && !Array.isArray(description) ||
+                code && typeof code !== "string" ||
+                price && typeof price !== "number" ||
+                stock && typeof stock !== "number" ||
+                category && (typeof category !== "string" || (category !== "vegan" && category !== "vegetarian")) ||
+                price < 0 ||
+                stock < 0
+            ) {
+                CustomError.createError({
+                    name: "update product error",
+                    cause: updateProductError(updateFields),
+                    message: "Error validating data",
+                    errorCode: Errors.INVALID_BODY_ERROR
+                })
+            }
     
+            updateFields.thumbnail = thumbnailFile
+
             const updatedProduct = await ProductsService.updateProduct(pid, updateFields)
-            res.status(201).json({ data: updatedProduct })
+            res.json({ status: "success", message: "Product updated", data: updatedProduct })
         } catch (error) {
-            res.status(500).json({ error: error.message })
+            next(error)
         }
     }
 
-    static deleteProduct = async (req, res) => {
+    static deleteProduct = async (req, res, next) => {
         try {
             const { pid } = req.params
             const deletedProduct = await ProductsService.deleteProduct(pid)
-            res.status(200).json({ data: deletedProduct })
+
+            // Custom error
+            if (!deletedProduct) {
+                CustomError.createError ({
+                    name: "delete product error",
+                    cause: paramError(pid),
+                    message: "Error getting the product to delete",
+                    errorCode: Errors.INVALID_PARAM_ERROR
+                })
+            }
+
+            res.json({ status: "success", message: "Product deleted", data: deletedProduct })
         } catch (error) {
-            res.status(500).json({ error: error.message })
+            next(error)
+        }
+    }
+
+    static mockingProducts = async (req, res, next) => {
+        try {
+            const quantity = parseInt(req.query.quantity) || 100
+            let products = []
+
+            for (let i = 0; i < quantity; i++) {
+                const newProduct = generateProductMock()
+
+                // Custom error
+                if (!newProduct) {
+                    CustomError.createError ({
+                        name: "mocking products error",
+                        cause: mockingProductsError(),
+                        message: "Error creating products",
+                        errorCode: Errors.DATABASE_ERROR
+                    })
+                }
+
+                products.push(newProduct)
+            }
+
+            res.json({ status: "success", data: { payload: products }})
+        } catch (error) {
+            next(error)
         }
     }
 }

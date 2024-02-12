@@ -1,7 +1,8 @@
-import { Router } from "express"
-import passport from "passport"
-import { config } from "../config/config.js"
-import { SessionsController } from "../controllers/sessions.controller.js"
+import { Router } from "express";
+import passport from "passport";
+import { config } from "../config/config.js";
+import { SessionsController } from "../controllers/sessions.controller.js";
+import { checkRoleMiddleware } from "../middleware/auth.js";
 
 const router = Router()
 
@@ -32,5 +33,11 @@ router.get("/fail-login", SessionsController.failLogin)
 
 // Logout
 router.get("/logout", SessionsController.logout)
+
+// All users
+router.get("/users", checkRoleMiddleware(["admin"]), SessionsController.getUsers)
+
+// One user
+router.get("/users/:uid", checkRoleMiddleware(["admin"]), SessionsController.getUserById)
 
 export { router as sessionsRouter }

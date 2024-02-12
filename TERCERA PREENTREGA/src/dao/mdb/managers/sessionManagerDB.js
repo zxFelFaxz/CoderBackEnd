@@ -42,4 +42,14 @@ export class SessionManagerDB {
             throw new Error("Error getting user")
         }
     }
+
+    // Get all users
+    async getUsers() {
+        try {
+            const result = await this.model.find().lean()
+            return result
+        } catch (error) {
+            throw new Error("Error al obtener los usuarios")
+        }
+    }
 }

@@ -15,6 +15,7 @@ import { viewsRouter } from "./routes/views.router.js"
 import { sessionsRouter } from "./routes/sessions.router.js"
 import { productsRouter } from "./routes/products.router.js"
 import { cartsRouter } from "./routes/carts.router.js"
+import { errorHandler } from "./middleware/errorHandler.js"
 
 const port = config.server.port
 const app = express()
@@ -25,15 +26,15 @@ const httpServer = app.listen(port, () => {
 
 const socketServer = new Server(httpServer)
 
-// Conexión base de datos
+// Database connection
 ConnectDB.getInstance()
 
-// Configuración handlebars
+// Configuration handlebars
 app.engine(".hbs", engine({ extname: ".hbs" }))
 app.set("view engine", ".hbs")
 app.set("views", path.join(__dirname, "/views"))
 
-// Configuración de session
+// Session configuration
 app.use(session ({
     store: MongoStore.create ({
         ttl: 10800000,
@@ -44,20 +45,20 @@ app.use(session ({
     saveUninitialized: true
 }))
 
-// Configuración de passport
+// Passport configuration
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
 
-// Configuración socket.io
+// Socket.io configuration
 socketServer.on("connection", async (socket) => {
     console.log("Cliente conectado: ", socket.id)
 
-    // Obtener productos
+    // Get products
     const products = await ProductsService.getProductsNoFilter()
     socket.emit("productsArray", products)
 
-    // Agregar el producto del socket del cliente
+    // Add customer socket product
     socket.on("addProduct", async (productInfo) => {
         try {
             const result = await ProductsService.addProduct(productInfo)
@@ -68,7 +69,7 @@ socketServer.on("connection", async (socket) => {
         }
     })
 
-    // Eliminar el producto del socket del cliente
+    // Delete the product from the client socket
     socket.on("deleteProduct", async (productId) => {
         try {
             const result = await ProductsService.deleteProduct(productId)
@@ -91,3 +92,4 @@ app.use("/", viewsRouter)
 app.use("/api/sessions", sessionsRouter)
 app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)
+app.use(errorHandler)
