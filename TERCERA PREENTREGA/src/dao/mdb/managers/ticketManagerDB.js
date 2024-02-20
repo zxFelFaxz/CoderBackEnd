@@ -1,4 +1,5 @@
-import { ticketsModel } from "../models/tickets.model.js"
+import { ticketsModel } from "../models/tickets.model.js";
+import { logger } from "../../../helpers/logger.js";
 
 export class TicketManagerDB {
     constructor() {
@@ -11,7 +12,7 @@ export class TicketManagerDB {
             const result = await this.model.create(newTicket)
             return result
         } catch (error) {
-            console.log("purchaseCart: ", error.message)
+            logger.error("purchase cart: Error creating the purchase ticket")
             throw new Error("Error creating the purchase ticket")
         }
     }
@@ -22,7 +23,7 @@ export class TicketManagerDB {
             const result = await this.model.find().lean()
             return result
         } catch (error) {
-            console.log("getTickets: ", error.message)
+            logger.error("get tickets: Error getting purchase tickets")
             throw new Error("Error getting purchase tickets")
         }
     }
@@ -38,7 +39,7 @@ export class TicketManagerDB {
 
             return result
         } catch (error) {
-            console.log("getTicketById: ", error.message)
+            logger.error("get ticket by id: Error getting the purchase ticket")
             throw new Error("Error getting the purchase ticket")
         }
     }

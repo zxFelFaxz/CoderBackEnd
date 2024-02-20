@@ -1,4 +1,5 @@
 import { sessionManager } from "../dao/index.js"
+import { logger } from "../helpers/logger.js"
 
 export class SessionsController {
     static redirectLogin = async (req, res) => {
@@ -6,6 +7,7 @@ export class SessionsController {
     }
 
     static failSignup = async (req, res) => {
+        logger.error("signup: Error completing the registration")
         res.render("signup", { error: `
                                     Error completing the registration
 
@@ -24,6 +26,7 @@ export class SessionsController {
     }
 
     static failLogin = async (req, res) => {
+        logger.error("login: Error logging in")
         res.render("login", { error: `
                                     Error logging in
 
@@ -38,12 +41,14 @@ export class SessionsController {
         try {
             req.session.destroy((err) => {
                 if (err) {
+                    logger.error("logout: Error closing session")
                     return res.render("profile", { error: "Error closing session" })
                 } else {
                     return res.redirect("/login")
                 }
             })
         } catch (error) {
+            logger.error("logout: Error closing session")
             res.render("logout", { error: "Error closing session" })
         }
     }
@@ -53,6 +58,7 @@ export class SessionsController {
             const users = await sessionManager.getUsers()
             res.json({ status: "success", data: users })
         } catch (error) {
+            logger.error("get users: Error getting users")
             res.json({ status: "error", error: "Error retrieving users" })
         }
     }
@@ -63,6 +69,7 @@ export class SessionsController {
             const user = await sessionManager.getUserById(uid)
             res.json({ status: "success", data: user })
         } catch (error) {
+            logger.error("get user by id: Error getting user")
             res.json({ status: "error", error: "Error retrieving user" })
         }
     }

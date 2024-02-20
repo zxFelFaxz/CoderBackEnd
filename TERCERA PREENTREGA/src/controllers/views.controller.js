@@ -4,6 +4,7 @@ import { GetUserInfoDto } from "../dao/dto/getUserInfo.dto.js";
 import { CustomError } from "../services/customErrors/customError.service.js";
 import { Errors } from "../enums/Errors.js";
 import { dataBaseGetError, paramError } from "../services/customErrors/errors/generalErrors.service.js";
+import { logger } from "../helpers/logger.js";
 
 export class ViewsController {
     static renderHome = async (req, res, next) => {
@@ -181,5 +182,15 @@ export class ViewsController {
         } catch (error) {
             res.json({ status: "error", error: "Error getting profile" })
         }
+    }
+    static loggerTest = (req, res) => {
+        logger.fatal("Log fatal test")
+        logger.error("Log error test")
+        logger.warning("Log warning test")
+        logger.info("Log info test")
+        logger.http("Log http test")
+        logger.debug("Log debug test")
+
+        res.send("Logger test recibido")
     }
 }

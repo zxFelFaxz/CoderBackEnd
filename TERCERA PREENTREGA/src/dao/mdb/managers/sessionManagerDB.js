@@ -1,4 +1,5 @@
-import { usersModel } from "../models/users.model.js"
+import { usersModel } from "../models/users.model.js";
+import { logger } from "../../../helpers/logger.js";
 
 export class SessionManagerDB {
     constructor() {
@@ -11,7 +12,7 @@ export class SessionManagerDB {
             const result = await this.model.create(signupForm)
             return result
         } catch (error) {
-            console.log("registerUser: ", error.message)
+            logger.error("register user: Error completing register")
             throw new Error ("Error completing register")
         }
     }
@@ -27,7 +28,7 @@ export class SessionManagerDB {
             return result
             }
         } catch (error) {
-            console.log("loginUser: ", error.message)
+            logger.error("login user: Error login")
             throw new Error ("Error login")
         }
     }
@@ -38,7 +39,7 @@ export class SessionManagerDB {
             const result = await this.model.findById(userId).lean()
             return result
         } catch (error) {
-            console.log("getUserById: ", error.message)
+            logger.error("get users: Error  getting user")
             throw new Error("Error getting user")
         }
     }
@@ -49,7 +50,8 @@ export class SessionManagerDB {
             const result = await this.model.find().lean()
             return result
         } catch (error) {
-            throw new Error("Error al obtener los usuarios")
+            logger.error("get user by id: Error getting all  users")
+            throw new Error("Error getting all  users")
         }
     }
 }

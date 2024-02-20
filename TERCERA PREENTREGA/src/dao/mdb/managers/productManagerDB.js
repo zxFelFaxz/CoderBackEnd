@@ -1,4 +1,5 @@
 import { productsModel } from "../models/products.model.js";
+import { logger } from "../../../helpers/logger.js";
 
 export class ProductManagerMDB {
     constructor() {
@@ -11,7 +12,7 @@ export class ProductManagerMDB {
             const result = await this.model.find().lean();
             return result;
         } catch (error) {
-            console.log("getProductsNoFilter: ", error.message);
+            logger.error("get products no filter: Error getting products");
             throw new Error("Error retrieving products");
         }
     }
@@ -22,7 +23,7 @@ export class ProductManagerMDB {
             const result = await this.model.paginate(query, options);
             return result;
         } catch (error) {
-            console.log("getProducts: ", error.message);
+            logger.error("get products: Error retrieving products");
             throw new Error("Error retrieving products");
         }
     }
@@ -38,7 +39,7 @@ export class ProductManagerMDB {
 
             return result;
         } catch (error) {
-            console.log("getProductById: ", error.message);
+            logger.error("get product by id: Error getting the product");
             throw new Error("Error retrieving the product");
         }
     }
@@ -49,8 +50,8 @@ export class ProductManagerMDB {
             const result = await this.model.create(productInfo);
             return result;
         } catch (error) {
-            console.log("addProduct: ", error.message);
-            throw error;
+            logger.error("add product: Error adding the product");
+            throw new Error("Error adding the product");
         }
     }
 
@@ -65,7 +66,7 @@ export class ProductManagerMDB {
 
             return result;
         } catch (error) {
-            console.log("updateProduct: ", error.message);
+            logger.error("update product: Error updating the product");
             throw new Error("Error updating the product");
         }
     }
@@ -81,7 +82,7 @@ export class ProductManagerMDB {
 
             return result;
         } catch (error) {
-            console.log("deleteProduct: ", error.message);
+            logger.error("delete product: Error deleting the product");
             throw new Error("Error deleting the product");
         }
     }

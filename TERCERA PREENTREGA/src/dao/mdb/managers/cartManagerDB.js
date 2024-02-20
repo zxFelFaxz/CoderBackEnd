@@ -1,11 +1,11 @@
 import { cartsModel } from "../models/carts.model.js";
 import mongoose from 'mongoose';
+import { logger } from "../../../helpers/logger.js";
 
 export class CartManagerMDB {
     constructor() {
         this.model = cartsModel;
     }
-
     // Get all carts
     async getCarts() {
         try {
@@ -16,7 +16,7 @@ export class CartManagerMDB {
                 console.log("getCarts: Invalid ObjectId in products.product");
                 throw new Error("Error retrieving carts. Invalid ObjectId in products.product");
             } else {
-                console.log("getCarts: ", error.message);
+                logger.error("get carts: Error getting carts");
                 throw new Error("Error retrieving carts");
             }
         }
@@ -36,7 +36,7 @@ export class CartManagerMDB {
             }
             return result;
         } catch (error) {
-            console.log("getCartById: ", error.message);
+            logger.error("get cart by id: error getting the cart");
             throw new Error("Error retrieving the cart");
         }
     }
@@ -48,7 +48,7 @@ export class CartManagerMDB {
             const result = await this.model.create(newCart);
             return result;
         } catch (error) {
-            console.log("createCart: ", error.message);
+            logger.error("create cart: Error creating cart");
             throw new Error("Error creating the cart");
         }
     }
@@ -68,7 +68,7 @@ export class CartManagerMDB {
             const result = await this.model.findByIdAndUpdate(cartId, cart, { new: true });
             return result;
         } catch (error) {
-            console.log("addProductToCart: ", error.message);
+            logger.error("add product to cart: Error adding the product to cart");
             throw new Error("Error adding the product to the cart");
         }
     }
@@ -83,7 +83,7 @@ export class CartManagerMDB {
             const result = await this.model.findByIdAndUpdate(cartId, cart, { new: true });
             return result;
         } catch (error) {
-            console.log("updateProductsInCart: ", error.message);
+            logger.error("update products in cart: Error updapting the cart's products");
             throw new Error("Error updating the cart's products");
         }
     }
@@ -107,7 +107,7 @@ export class CartManagerMDB {
                 throw new Error("Cannot update quantity because the product is not in the cart");
             }
         } catch (error) {
-            console.log("updateProductQuantityInCart: ", error.message);
+            logger.error("update product quantity in cart: Error updating the quantity of the product in the cart");
             throw new Error("Error updating the quantity of the product in the cart");
         }
     }
@@ -123,7 +123,7 @@ export class CartManagerMDB {
             const result = await this.model.findByIdAndUpdate(cartId, cart, { new: true });
             return result;
         } catch (error) {
-            console.log("deleteAllProductsInCart: ", error.message);
+            logger.error("delete all products in cart: Error deleting products from the cart");
             throw new Error("Error deleting products from the cart");
         }
     }
@@ -145,7 +145,7 @@ export class CartManagerMDB {
                 throw new Error("The product to delete is not in the cart");
             }
         } catch (error) {
-            console.log("deleteProductInCart: ", error.message);
+            logger.error("delete product in cart: Error deleting the  product from the cart");
             throw new Error("Error deleting the product from the cart");
         }
     }

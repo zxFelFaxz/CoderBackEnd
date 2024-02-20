@@ -16,12 +16,13 @@ import { sessionsRouter } from "./routes/sessions.router.js"
 import { productsRouter } from "./routes/products.router.js"
 import { cartsRouter } from "./routes/carts.router.js"
 import { errorHandler } from "./middleware/errorHandler.js"
+import { logger } from "./helpers/logger.js"
 
 const port = config.server.port
 const app = express()
 
 const httpServer = app.listen(port, () => {
-    console.log("Servidor funcionando en el puerto: ", port)
+    console.log("Server running on port: ", port)
 })
 
 const socketServer = new Server(httpServer)
@@ -52,7 +53,7 @@ app.use(passport.session())
 
 // Socket.io configuration
 socketServer.on("connection", async (socket) => {
-    console.log("Cliente conectado: ", socket.id)
+    logger.info("Client logged in: ", socket.id)
 
     // Get products
     const products = await ProductsService.getProductsNoFilter()
@@ -65,7 +66,7 @@ socketServer.on("connection", async (socket) => {
             const products = await ProductsService.getProductsNoFilter()
             socketServer.emit("productsArray", products)
         } catch (error) {
-            console.error(error.message)
+            logger.error(error)
         }
     })
 
@@ -76,7 +77,7 @@ socketServer.on("connection", async (socket) => {
             const products = await ProductsService.getProductsNoFilter()
             socketServer.emit("productsArray", products)
         } catch (error) {
-            console.error(error.message)
+            logger.error(error)
         }
     })
 })
